@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sasindu Mudawagedara - Creative Designer</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- EmailJS -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function(){
+            // Initialize EmailJS with your public key
+            emailjs.init("_d_cHJHp9X7IMQdlU"); // Your actual public key
+        })();
+    </script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-text">SM</span>
+            </div>
+            <ul class="nav-menu" id="nav-menu">
+                <li class="nav-item">
+                    <a href="#home" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#about" class="nav-link">About</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#services" class="nav-link">Services</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#portfolio" class="nav-link">Portfolio</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#contact" class="nav-link">Contact</a>
+                </li>
+            </ul>
+            <div class="nav-toggle" id="nav-toggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-background">
+            <div class="geometric-shapes">
+                <div class="shape shape1"></div>
+                <div class="shape shape2"></div>
+                <div class="shape shape3"></div>
+                <div class="shape shape4"></div>
+            </div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">
+                    <span class="title-line">SASINDU</span>
+                    <span class="title-line glow-text">MUDAWAGEDARA</span>
+                </h1>
+                <p class="hero-subtitle">Creative Web Designer • Graphic Designer • Assignment Helper</p>
+                <div class="hero-description">
+                    <p>Crafting digital experiences that blend creativity with cutting-edge technology. 
+                    Transforming ideas into stunning visual narratives that captivate and inspire.</p>
+                </div>
+                <div class="hero-buttons">
+                    <a href="#portfolio" class="btn btn-primary">
+                        <span>View My Work</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="#contact" class="btn btn-secondary">
+                        <span>Get In Touch</span>
+                        <i class="fas fa-paper-plane"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="floating-card">
+                    <div class="card-content">
+                        <div class="profile-image">
+                            <div class="image-placeholder">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        </div>
+                        <div class="status-indicator">
+                            <span class="status-dot"></span>
+                            <span>Available for Projects</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="scroll-line"></div>
+            <span>Scroll to explore</span>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">About Me</h2>
+                <p class="section-subtitle">Passionate about creating digital experiences</p>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <div class="glass-card">
+                        <h3>Digital Creative Professional</h3>
+                        <p>With a passion for innovative design and cutting-edge technology, I specialize in creating immersive digital experiences that push the boundaries of creativity. My expertise spans across web design, graphic design, and academic assistance, bringing a unique blend of artistic vision and technical expertise to every project.</p>
+                        <div class="skills-grid">
+                            <div class="skill-item">
+                                <i class="fas fa-code"></i>
+                                <span>Web Development</span>
+                            </div>
+                            <div class="skill-item">
+                                <i class="fas fa-palette"></i>
+                                <span>Graphic Design</span>
+                            </div>
+                            <div class="skill-item">
+                                <i class="fas fa-mobile-alt"></i>
+                                <span>UI/UX Design</span>
+                            </div>
+                            <div class="skill-item">
+                                <i class="fas fa-graduation-cap"></i>
+                                <span>Academic Support</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-stats">
+                    <div class="stat-card">
+                        <div class="stat-number" data-count="150">0</div>
+                        <div class="stat-label">Projects Completed</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" data-count="50">0</div>
+                        <div class="stat-label">Happy Clients</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" data-count="3">0</div>
+                        <div class="stat-label">Years Experience</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Services</h2>
+                <p class="section-subtitle">Comprehensive creative solutions</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card" data-service="web">
+                    <div class="service-icon">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <h3>Web Design & Development</h3>
+                    <p>Creating responsive, modern websites with cutting-edge animations and user experiences that captivate and convert.</p>
+                    <div class="service-features">
+                        <span>Responsive Design</span>
+                        <span>Modern Animations</span>
+                        <span>Performance Optimized</span>
+                    </div>
+                    <div class="service-overlay">
+                        <div class="overlay-content">
+                            <h4>Technologies I Use</h4>
+                            <ul>
+                                <li>HTML5 & CSS3</li>
+                                <li>JavaScript & React</li>
+                                <li>GSAP Animations</li>
+                                <li>Responsive Frameworks</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="service-card" data-service="graphic">
+                    <div class="service-icon">
+                        <i class="fas fa-paint-brush"></i>
+                    </div>
+                    <h3>Graphic Design</h3>
+                    <p>Crafting compelling visual identities, logos, and brand materials that communicate your message with impact and style.</p>
+                    <div class="service-features">
+                        <span>Brand Identity</span>
+                        <span>Logo Design</span>
+                        <span>Print Design</span>
+                    </div>
+                    <div class="service-overlay">
+                        <div class="overlay-content">
+                            <h4>Design Services</h4>
+                            <ul>
+                                <li>Logo & Brand Identity</li>
+                                <li>Marketing Materials</li>
+                                <li>Digital Illustrations</li>
+                                <li>Print Design</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="service-card" data-service="ui">
+                    <div class="service-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>UI/UX Design</h3>
+                    <p>Designing intuitive user interfaces and experiences that prioritize usability while maintaining aesthetic excellence.</p>
+                    <div class="service-features">
+                        <span>User Research</span>
+                        <span>Wireframing</span>
+                        <span>Prototyping</span>
+                    </div>
+                    <div class="service-overlay">
+                        <div class="overlay-content">
+                            <h4>UX Process</h4>
+                            <ul>
+                                <li>User Research & Analysis</li>
+                                <li>Wireframes & Prototypes</li>
+                                <li>Usability Testing</li>
+                                <li>Design Systems</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="service-card" data-service="academic">
+                    <div class="service-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>Assignment Helper</h3>
+                    <p>Providing comprehensive academic support and guidance to help students excel in their design and technology coursework.</p>
+                    <div class="service-features">
+                        <span>Design Projects</span>
+                        <span>Web Development</span>
+                        <span>Academic Writing</span>
+                    </div>
+                    <div class="service-overlay">
+                        <div class="overlay-content">
+                            <h4>Academic Support</h4>
+                            <ul>
+                                <li>Design Project Assistance</li>
+                                <li>Code Review & Help</li>
+                                <li>Research Support</li>
+                                <li>Portfolio Development</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="portfolio">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Portfolio</h2>
+                <p class="section-subtitle">Showcasing my creative journey</p>
+            </div>
+            <div class="portfolio-filters">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="web">Web Design</button>
+                <button class="filter-btn" data-filter="graphic">Graphic Design</button>
+                <button class="filter-btn" data-filter="ui">UI/UX</button>
+            </div>
+            <div class="portfolio-grid">
+                <div class="portfolio-item" data-category="web">
+                    <div class="portfolio-image">
+                        <div class="image-placeholder">
+                            <i class="fas fa-laptop"></i>
+                        </div>
+                    </div>
+                    <div class="portfolio-content">
+                        <h3>E-Commerce Platform</h3>
+                        <p>Modern online shopping experience with advanced animations</p>
+                        <div class="portfolio-tags">
+                            <span>React</span>
+                            <span>GSAP</span>
+                            <span>E-commerce</span>
+                        </div>
+                    </div>
+                    <div class="portfolio-overlay">
+                        <button class="view-project">
+                            <i class="fas fa-eye"></i>
+                            View Project
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="portfolio-item" data-category="graphic">
+                    <div class="portfolio-image">
+                        <div class="image-placeholder">
+                            <i class="fas fa-paint-brush"></i>
+                        </div>
+                    </div>
+                    <div class="portfolio-content">
+                        <h3>Brand Identity Design</h3>
+                        <p>Complete branding solution for tech startup</p>
+                        <div class="portfolio-tags">
+                            <span>Branding</span>
+                            <span>Logo</span>
+                            <span>Identity</span>
+                        </div>
+                    </div>
+                    <div class="portfolio-overlay">
+                        <button class="view-project">
+                            <i class="fas fa-eye"></i>
+                            View Project
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="portfolio-item" data-category="ui">
+                    <div class="portfolio-image">
+                        <div class="image-placeholder">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                    </div>
+                    <div class="portfolio-content">
+                        <h3>Mobile App Interface</h3>
+                        <p>Intuitive fitness tracking app design</p>
+                        <div class="portfolio-tags">
+                            <span>Mobile</span>
+                            <span>UI/UX</span>
+                            <span>Figma</span>
+                        </div>
+                    </div>
+                    <div class="portfolio-overlay">
+                        <button class="view-project">
+                            <i class="fas fa-eye"></i>
+                            View Project
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="portfolio-item" data-category="web">
+                    <div class="portfolio-image">
+                        <div class="image-placeholder">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                    </div>
+                    <div class="portfolio-content">
+                        <h3>Creative Agency Website</h3>
+                        <p>Portfolio website with stunning animations</p>
+                        <div class="portfolio-tags">
+                            <span>CSS3</span>
+                            <span>Animation</span>
+                            <span>Portfolio</span>
+                        </div>
+                    </div>
+                    <div class="portfolio-overlay">
+                        <button class="view-project">
+                            <i class="fas fa-eye"></i>
+                            View Project
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="portfolio-item" data-category="graphic">
+                    <div class="portfolio-image">
+                        <div class="image-placeholder">
+                            <i class="fas fa-image"></i>
+                        </div>
+                    </div>
+                    <div class="portfolio-content">
+                        <h3>Digital Poster Series</h3>
+                        <p>Futuristic poster designs for tech conference</p>
+                        <div class="portfolio-tags">
+                            <span>Poster</span>
+                            <span>Digital Art</span>
+                            <span>Typography</span>
+                        </div>
+                    </div>
+                    <div class="portfolio-overlay">
+                        <button class="view-project">
+                            <i class="fas fa-eye"></i>
+                            View Project
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="portfolio-item" data-category="ui">
+                    <div class="portfolio-image">
+                        <div class="image-placeholder">
+                            <i class="fas fa-desktop"></i>
+                        </div>
+                    </div>
+                    <div class="portfolio-content">
+                        <h3>Dashboard Interface</h3>
+                        <p>Clean and modern admin dashboard design</p>
+                        <div class="portfolio-tags">
+                            <span>Dashboard</span>
+                            <span>Admin</span>
+                            <span>Data Viz</span>
+                        </div>
+                    </div>
+                    <div class="portfolio-overlay">
+                        <button class="view-project">
+                            <i class="fas fa-eye"></i>
+                            View Project
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Get In Touch</h2>
+                <p class="section-subtitle">Let's create something amazing together</p>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="glass-card">
+                        <h3>Let's Connect</h3>
+                        <p>Ready to bring your vision to life? I'm here to help you create stunning digital experiences that leave a lasting impression.</p>
+                        <div class="contact-methods">
+                            <div class="contact-method">
+                                <i class="fas fa-envelope"></i>
+                                <div>
+                                    <span>Email</span>
+                                    <p><a href="mailto:pradeepsasindu2001@gmail.com">pradeepsasindu2001@gmail.com</a></p>
+                                </div>
+                            </div>
+                            <div class="contact-method">
+                                <i class="fas fa-phone"></i>
+                                <div>
+                                    <span>Phone</span>
+                                    <p><a href="https://wa.me/+94705187952" target="_blank">+94 70 518 7952</a></p>
+                                </div>
+                            </div>
+                            <div class="contact-method">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <div>
+                                    <span>Location</span>
+                                    <p><a href="https://maps.app.goo.gl/fDFoQxdqmydhSq3n8" target="_blank">Navinna, Maharagama, Sri Lanka.</a></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="social-links">
+                            <a href="#" class="social-link">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <a href="#" class="social-link">
+                                <i class="fab fa-behance"></i>
+                            </a>
+                            <a href="#" class="social-link">
+                                <i class="fab fa-dribbble"></i>
+                            </a>
+                            <a href="#" class="social-link">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form-container">
+                    <form class="contact-form" id="contact-form">
+                        <div class="form-group">
+                            <input type="text" id="name" name="name" placeholder="" required data-placeholder="Kasuni Pabasara">
+                            <label for="name">Your Name</label>
+                            <div class="form-line"></div>
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" id="mobile" name="mobile" placeholder="" required data-placeholder="+94 70 518 7952">
+                            <label for="mobile">Mobile Number</label>
+                            <div class="form-line"></div>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="message" name="message" rows="6" placeholder="" required data-placeholder="Hi Sasindu, I would like to discuss a web design project for my business..."></textarea>
+                            <label for="message">Your Message</label>
+                            <div class="form-line"></div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <span>Send Message</span>
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-text">
+                    <p>&copy; 2025 Sasindu Mudawagedara. All rights reserved.</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#home">Home</a>
+                    <a href="#about">About</a>
+                    <a href="#services">Services</a>
+                    <a href="#portfolio">Portfolio</a>
+                    <a href="#contact">Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
