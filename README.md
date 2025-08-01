@@ -1,12 +1,45 @@
 # 🚀 Sasindu Mudawagedara - Portfolio Website
 
-A modern, futuristic portfolio website showcasing creative web design, graphic design, and academic support services. Built with cutting-edge animations, mobile-first design, and professional EmailJS integration.
+A modern, futuristic portfolio website showcasing creative web design, graphic design, and academic support services. Built with cutting-edge animations, mobile-first design, PWA support, and comprehensive form validation.
 
 ![Portfolio Preview](https://img.shields.io/badge/Status-Live-brightgreen)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)
+![PWA](https://img.shields.io/badge/PWA-5A0FC8?style=flat&logo=pwa&logoColor=white)
 ![EmailJS](https://img.shields.io/badge/EmailJS-FF6B6B?style=flat&logo=gmail&logoColor=white)
+
+## ✨ New Features Added
+
+### 🎯 Enhanced UI/UX
+- **Accessibility Improvements**: Skip links, ARIA labels, keyboard navigation, screen reader support
+- **Enhanced Loading Screen**: Animated loading with dots and better UX
+- **Back-to-Top Button**: With scroll progress indicator
+- **Form Validation**: Real-time validation with error states and success feedback
+- **Blog Section**: Latest insights with newsletter signup
+- **Enhanced Footer**: Comprehensive links and social media integration
+
+### 📱 Mobile Responsiveness
+- **Improved Touch Targets**: Minimum 44px touch targets throughout
+- **Better Typography Scaling**: Fluid typography using clamp() for better readability
+- **Enhanced Mobile Navigation**: Better hamburger menu with accessibility
+- **Touch-Friendly Forms**: Improved mobile form experience
+- **Optimized Performance**: Disabled heavy animations on mobile for better performance
+
+### ⚡ Performance & SEO
+- **Progressive Web App (PWA)**: Installable with offline support
+- **Service Worker**: Caching strategy for offline functionality  
+- **Enhanced SEO**: Meta tags, Open Graph, Twitter Cards, structured data
+- **Sitemap & Robots.txt**: Better search engine optimization
+- **Privacy Policy**: GDPR-compliant privacy policy
+- **Performance Optimizations**: Lazy loading, image optimization, code minification
+
+### 🛠 Technical Enhancements
+- **Form Validation System**: Comprehensive client-side validation
+- **Newsletter Integration**: Email subscription with validation
+- **Notification System**: Toast notifications for user feedback
+- **Error Handling**: Better error states and user feedback
+- **Code Organization**: Modular JavaScript with classes and improved structure
 
 ## ✨ Features
 

@@ -4,9 +4,75 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sasindu Mudawagedara - Creative Designer</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Sasindu Mudawagedara - Creative Web Designer & Graphic Designer in Sri Lanka. Expert in UI/UX design, web development, and academic assistance. Transform your ideas into stunning digital experiences.">
+    <meta name="keywords" content="web designer sri lanka, graphic designer, ui/ux designer, portfolio, web development, creative design, academic assistance, sasindu mudawagedara">
+    <meta name="author" content="Sasindu Mudawagedara">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://sasindu.tech/">
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Sasindu Mudawagedara - Creative Designer">
+    <meta property="og:description" content="Professional web designer and graphic designer creating stunning digital experiences. Specializing in modern web design, UI/UX, and creative solutions.">
+    <meta property="og:image" content="https://sasindu.tech/assets/og-image.jpg">
+    <meta property="og:url" content="https://sasindu.tech/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Sasindu Mudawagedara Portfolio">
+    
+    <!-- Twitter Card Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Sasindu Mudawagedara - Creative Designer">
+    <meta name="twitter:description" content="Professional web designer and graphic designer creating stunning digital experiences.">
+    <meta name="twitter:image" content="https://sasindu.tech/assets/twitter-card.jpg">
+    
+    <!-- Resource Hints -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+    
+    <!-- Critical CSS and Styles -->
+    <link rel="preload" href="styles.css" as="style">
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+    <link rel="shortcut icon" href="favicon.svg" type="image/svg+xml">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#00d4ff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Sasindu Portfolio">
+    
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Sasindu Mudawagedara",
+        "jobTitle": "Creative Web Designer & Graphic Designer",
+        "description": "Professional web designer and graphic designer creating stunning digital experiences",
+        "url": "https://sasindu.tech",
+        "email": "pradeepsasindu2001@gmail.com",
+        "telephone": "+94705187952",
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Navinna, Maharagama",
+            "addressCountry": "Sri Lanka"
+        },
+        "sameAs": [
+            "https://linkedin.com/in/sasindu-mudawagedara",
+            "https://github.com/SASINDU20013d"
+        ],
+        "knowsAbout": ["Web Design", "Graphic Design", "UI/UX Design", "Web Development", "Academic Assistance"]
+    }
+    </script>
     <!-- EmailJS -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script type="text/javascript">
@@ -17,30 +83,64 @@
     </script>
 </head>
 <body>
+    <!-- Modern Loading Screen -->
+    <div class="loading" id="loading">
+        <div class="loading-content">
+            <div class="loading-logo">
+                <div class="logo-animation">SM</div>
+            </div>
+            <div class="loading-progress">
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <div class="loading-text">Initializing Experience</div>
+            </div>
+            <div class="loading-particles">
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Skip to Content (Accessibility) -->
+    <a href="#main-content" class="skip-to-content">Skip to main content</a>
     <!-- Navigation -->
-    <nav class="navbar" id="navbar">
+    <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
         <div class="nav-container">
             <div class="nav-logo">
                 <span class="logo-text">SM</span>
             </div>
             <ul class="nav-menu" id="nav-menu">
                 <li class="nav-item">
-                    <a href="#home" class="nav-link">Home</a>
+                    <a href="#home" class="nav-link" aria-label="Go to Home section">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#about" class="nav-link">About</a>
+                    <a href="#about" class="nav-link" aria-label="Go to About section">About</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#services" class="nav-link">Services</a>
+                    <a href="#services" class="nav-link" aria-label="Go to Services section">Services</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#portfolio" class="nav-link">Portfolio</a>
+                    <a href="#portfolio" class="nav-link" aria-label="Go to Portfolio section">Portfolio</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#contact" class="nav-link">Contact</a>
+                    <a href="#contact" class="nav-link" aria-label="Go to Contact section">Contact</a>
                 </li>
             </ul>
-            <div class="nav-toggle" id="nav-toggle">
+            <div class="nav-controls">
+                <button class="theme-switcher" id="theme-switcher" aria-label="Toggle dark/light mode">
+                    <div class="switcher-track">
+                        <div class="switcher-thumb">
+                            <i class="fas fa-sun sun-icon"></i>
+                            <i class="fas fa-moon moon-icon"></i>
+                        </div>
+                    </div>
+                </button>
+            </div>
+            <div class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
                 <span class="bar"></span>
                 <span class="bar"></span>
                 <span class="bar"></span>
@@ -48,14 +148,19 @@
         </div>
     </nav>
 
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="back-to-top" aria-label="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
     <!-- Hero Section -->
-    <section id="home" class="hero">
+    <main id="main-content">
+    <section id="home" class="hero" role="banner">
         <div class="hero-background">
-            <div class="geometric-shapes">
-                <div class="shape shape1"></div>
-                <div class="shape shape2"></div>
-                <div class="shape shape3"></div>
-                <div class="shape shape4"></div>
+            <div class="modern-shapes" aria-hidden="true">
+                <div class="particle particle1"></div>
+                <div class="particle particle2"></div>
+                <div class="particle particle3"></div>
             </div>
         </div>
         <div class="hero-content">
@@ -70,33 +175,36 @@
                     Transforming ideas into stunning visual narratives that captivate and inspire.</p>
                 </div>
                 <div class="hero-buttons">
-                    <a href="#portfolio" class="btn btn-primary">
+                    <a href="#portfolio" class="btn btn-primary" aria-describedby="portfolio-desc">
                         <span>View My Work</span>
-                        <i class="fas fa-arrow-right"></i>
+                        <i class="fas fa-arrow-right" aria-hidden="true"></i>
                     </a>
-                    <a href="#contact" class="btn btn-secondary">
+                    <span id="portfolio-desc" class="sr-only">Navigate to portfolio section to see my latest projects</span>
+                    <a href="#contact" class="btn btn-secondary" aria-describedby="contact-desc">
                         <span>Get In Touch</span>
-                        <i class="fas fa-paper-plane"></i>
+                        <i class="fas fa-paper-plane" aria-hidden="true"></i>
                     </a>
+                    <span id="contact-desc" class="sr-only">Navigate to contact section to reach out for projects</span>
                 </div>
             </div>
             <div class="hero-visual">
                 <div class="floating-card">
                     <div class="card-content">
                         <div class="profile-image">
-                            <div class="image-placeholder">
-                                <i class="fas fa-user"></i>
+                            <img src="assets/profile-photo.jpg" alt="Sasindu Mudawagedara - Creative Designer" class="profile-img" loading="eager">
+                            <div class="image-placeholder" style="display: none;">
+                                <i class="fas fa-user" aria-hidden="true"></i>
                             </div>
                         </div>
                         <div class="status-indicator">
-                            <span class="status-dot"></span>
+                            <span class="status-dot" aria-hidden="true"></span>
                             <span>Available for Projects</span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="scroll-indicator">
+        <div class="scroll-indicator" aria-label="Scroll down to explore more content">
             <div class="scroll-line"></div>
             <span>Scroll to explore</span>
         </div>
@@ -466,26 +574,44 @@
                     </div>
                 </div>
                 <div class="contact-form-container">
-                    <form class="contact-form" id="contact-form">
+                    <form class="contact-form" id="contact-form" novalidate>
                         <div class="form-group">
-                            <input type="text" id="name" name="name" placeholder="" required data-placeholder="Kasuni Pabasara">
+                            <input type="text" id="name" name="name" placeholder="" required data-placeholder="Kasuni Pabasara" aria-describedby="name-error">
                             <label for="name">Your Name</label>
                             <div class="form-line"></div>
+                            <span class="error-message" id="name-error" role="alert"></span>
                         </div>
                         <div class="form-group">
-                            <input type="tel" id="mobile" name="mobile" placeholder="" required data-placeholder="+94 70 518 7952">
+                            <input type="tel" id="mobile" name="mobile" placeholder="" required data-placeholder="+94 70 518 7952" aria-describedby="mobile-error">
                             <label for="mobile">Mobile Number</label>
                             <div class="form-line"></div>
+                            <span class="error-message" id="mobile-error" role="alert"></span>
                         </div>
                         <div class="form-group">
-                            <textarea id="message" name="message" rows="6" placeholder="" required data-placeholder="Hi Sasindu, I would like to discuss a web design project for my business..."></textarea>
+                            <textarea id="message" name="message" rows="6" placeholder="" required data-placeholder="Hi Sasindu, I would like to discuss a web design project for my business..." aria-describedby="message-error"></textarea>
                             <label for="message">Your Message</label>
                             <div class="form-line"></div>
+                            <span class="error-message" id="message-error" role="alert"></span>
                         </div>
-                        <button type="submit" class="btn btn-primary">
-                            <span>Send Message</span>
-                            <i class="fas fa-paper-plane"></i>
+                        <div class="form-group checkbox-group">
+                            <input type="checkbox" id="privacy" name="privacy" required aria-describedby="privacy-error">
+                            <label for="privacy" class="checkbox-label">
+                                I agree to the <a href="privacy-policy.html" target="_blank" rel="noopener">Privacy Policy</a> and consent to my information being used to respond to my inquiry.
+                            </label>
+                            <span class="error-message" id="privacy-error" role="alert"></span>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="submit-btn">
+                            <span class="btn-text">Send Message</span>
+                            <span class="btn-loading" style="display: none;">
+                                <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
+                                Sending...
+                            </span>
+                            <i class="fas fa-paper-plane btn-icon" aria-hidden="true"></i>
                         </button>
+                        <div class="form-success" id="form-success" style="display: none;" role="alert">
+                            <i class="fas fa-check-circle" aria-hidden="true"></i>
+                            <span>Thank you! Your message has been sent successfully. I'll get back to you within 24 hours.</span>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -496,19 +622,86 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <div class="footer-text">
-                    <p>&copy; 2025 Sasindu Mudawagedara. All rights reserved.</p>
+                <div class="footer-main">
+                    <div class="footer-brand">
+                        <h3 class="footer-logo">Sasindu Mudawagedara</h3>
+                        <p>Creating digital experiences that inspire and engage. Let's build something amazing together.</p>
+                        
+                        <!-- Contact Info integrated into brand section -->
+                        <div class="footer-contact">
+                            <div class="contact-item">
+                                <i class="fas fa-envelope" aria-hidden="true"></i>
+                                <a href="mailto:pradeepsasindu2001@gmail.com">pradeepsasindu2001@gmail.com</a>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-phone" aria-hidden="true"></i>
+                                <a href="https://wa.me/+94705187952" target="_blank" rel="noopener">+94 70 518 7952</a>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                                <span>Navinna, Maharagama, Sri Lanka</span>
+                            </div>
+                        </div>
+                        
+                        <div class="footer-social">
+                            <a href="https://linkedin.com/in/sasindu-mudawagedara" class="social-link" aria-label="LinkedIn Profile" target="_blank" rel="noopener">
+                                <i class="fab fa-linkedin" aria-hidden="true"></i>
+                            </a>
+                            <a href="https://github.com/SASINDU20013d" class="social-link" aria-label="GitHub Profile" target="_blank" rel="noopener">
+                                <i class="fab fa-github" aria-hidden="true"></i>
+                            </a>
+                            <a href="https://behance.net/sasindu" class="social-link" aria-label="Behance Portfolio" target="_blank" rel="noopener">
+                                <i class="fab fa-behance" aria-hidden="true"></i>
+                            </a>
+                            <a href="https://dribbble.com/sasindu" class="social-link" aria-label="Dribbble Profile" target="_blank" rel="noopener">
+                                <i class="fab fa-dribbble" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="footer-links-group">
+                        <div class="footer-column">
+                            <h4>Quick Links</h4>
+                            <ul>
+                                <li><a href="#home">Home</a></li>
+                                <li><a href="#about">About</a></li>
+                                <li><a href="#services">Services</a></li>
+                                <li><a href="#portfolio">Portfolio</a></li>
+                                <li><a href="#contact">Contact</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-column">
+                            <h4>Services</h4>
+                            <ul>
+                                <li><a href="#services">Web Design</a></li>
+                                <li><a href="#services">Graphic Design</a></li>
+                                <li><a href="#services">UI/UX Design</a></li>
+                                <li><a href="#services">Academic Help</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-column">
+                            <h4>Resources</h4>
+                            <ul>
+                                <li><a href="portfolio-download.html">Download Portfolio</a></li>
+                                <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                                <li><a href="terms-of-service.html">Terms of Service</a></li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                <div class="footer-links">
-                    <a href="#home">Home</a>
-                    <a href="#about">About</a>
-                    <a href="#services">Services</a>
-                    <a href="#portfolio">Portfolio</a>
-                    <a href="#contact">Contact</a>
+                <div class="footer-bottom">
+                    <div class="footer-text">
+                        <p>&copy; 2025 Sasindu Mudawagedara. All rights reserved.</p>
+                    </div>
+                    <div class="footer-links">
+                        <a href="privacy-policy.html">Privacy</a>
+                        <a href="terms-of-service.html">Terms</a>
+                        <a href="sitemap.xml">Sitemap</a>
+                    </div>
                 </div>
             </div>
         </div>
     </footer>
+    </main>
 
     <script src="script.js"></script>
 </body>
