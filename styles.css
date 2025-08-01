@@ -1006,7 +1006,8 @@ a:focus {
     font-weight: 600;
 }
 
-/* Services Section */
+/* Services Section - TEMPORARILY DISABLED */
+/*
 .services {
     padding: var(--section-padding);
 }
@@ -1136,8 +1137,10 @@ a:focus {
     margin: 10px 0;
     font-size: 1rem;
 }
+*/
 
-/* Portfolio Section */
+/* Portfolio Section - TEMPORARILY DISABLED */
+/*
 .portfolio {
     padding: var(--section-padding);
     background: var(--secondary-bg);
@@ -1276,6 +1279,7 @@ a:focus {
 .view-project:hover {
     transform: scale(1.05);
 }
+*/
 
 /* Contact Section */
 .contact {

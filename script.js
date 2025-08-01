@@ -4,9 +4,10 @@ const navToggle = document.getElementById('nav-toggle');
 const navMenu = document.getElementById('nav-menu');
 const navLinks = document.querySelectorAll('.nav-link');
 const contactForm = document.getElementById('contact-form');
-const filterBtns = document.querySelectorAll('.filter-btn');
-const portfolioItems = document.querySelectorAll('.portfolio-item');
-const serviceCards = document.querySelectorAll('.service-card');
+// Temporarily disabled elements
+// const filterBtns = document.querySelectorAll('.filter-btn');
+// const portfolioItems = document.querySelectorAll('.portfolio-item');
+// const serviceCards = document.querySelectorAll('.service-card');
 const statNumbers = document.querySelectorAll('.stat-number');
 const backToTopBtn = document.getElementById('back-to-top');
 const loading = document.getElementById('loading');
@@ -218,7 +219,8 @@ function handleMobileScrollAnimations() {
     });
 }
 
-// Touch-friendly service cards
+// Touch-friendly service cards - TEMPORARILY DISABLED
+/*
 serviceCards.forEach(card => {
     if (isTouch) {
         // Add tap behavior for touch devices
@@ -242,8 +244,10 @@ serviceCards.forEach(card => {
         });
     }
 });
+*/
 
-// Mobile-friendly portfolio interactions
+// Mobile-friendly portfolio interactions - TEMPORARILY DISABLED
+/*
 portfolioItems.forEach(item => {
     if (isTouch) {
         let touchStartTime = 0;
@@ -270,6 +274,7 @@ portfolioItems.forEach(item => {
         });
     }
 });
+*/
 
 // Enhanced mobile navigation
 function enhanceMobileNav() {
@@ -337,6 +342,8 @@ function enhanceMobileForm() {
 }
 
 // Swipe gestures for portfolio
+// Swipe gestures for portfolio - TEMPORARILY DISABLED
+/*
 function addSwipeGestures() {
     if (!isTouch) return;
     
@@ -367,6 +374,7 @@ function addSwipeGestures() {
         }
     });
 }
+*/
 
 // Optimize animations for mobile
 function optimizeForMobile() {
@@ -454,7 +462,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateMobileOptimizations();
     enhanceMobileNav();
     enhanceMobileForm();
-    addSwipeGestures();
+    // addSwipeGestures(); // Temporarily disabled
     optimizeForMobile();
     monitorPerformance();
     
@@ -544,7 +552,8 @@ function parallaxEffect() {
     });
 }
 
-// Portfolio Filter System
+// Portfolio Filter System - TEMPORARILY DISABLED
+/*
 filterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
         // Remove active class from all buttons
@@ -571,8 +580,10 @@ filterBtns.forEach(btn => {
         });
     });
 });
+*/
 
-// Service Cards Hover Effects
+// Service Cards Hover Effects - TEMPORARILY DISABLED
+/*
 serviceCards.forEach(card => {
     card.addEventListener('mouseenter', () => {
         card.style.transform = 'translateY(-15px) rotateX(5deg)';
@@ -582,6 +593,7 @@ serviceCards.forEach(card => {
         card.style.transform = 'translateY(0) rotateX(0)';
     });
 });
+*/
 
 // Animated Counter for Statistics
 function animateCounters() {
@@ -1175,8 +1187,8 @@ document.addEventListener('DOMContentLoaded', () => {
         new ParticleSystem(heroCanvas);
     }
     
-    // Add animation classes to elements
-    const fadeElements = document.querySelectorAll('.section-title, .section-subtitle, .glass-card, .service-card, .portfolio-item, .stat-card');
+    // Add animation classes to elements (excluding disabled sections)
+    const fadeElements = document.querySelectorAll('.section-title, .section-subtitle, .glass-card, .stat-card');
     fadeElements.forEach((element, index) => {
         element.classList.add('fade-in');
         element.style.animationDelay = `${index * 0.1}s`;
