@@ -1,13 +1,471 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Birthday Photo Creation</title>
+    <title>Birthday Photo Creation | Sasindu Mudawagedara</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+    <link rel="shortcut icon" href="favicon.svg" type="image/svg+xml">
+    <!-- Fabric.js for canvas manipulation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
 </head>
+
 <body>
-    <h1>Birthday Photo Creation</h1>
-    <p>This page is under construction. Check back soon for birthday photo creation features!</p>
+    <!-- Skip to Content (Accessibility) -->
+    <a href="#main-content" class="skip-to-content">Skip to main content</a>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-text">SM</span>
+            </div>
+            <ul class="nav-menu" id="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link" aria-label="Go to Home page">Home</a>
+                </li>
+            </ul>
+            <div class="nav-controls">
+                <button class="theme-switcher" id="theme-switcher" aria-label="Toggle dark/light mode">
+                    <div class="switcher-track">
+                        <div class="switcher-thumb">
+                            <i class="fas fa-sun sun-icon"></i>
+                            <i class="fas fa-moon moon-icon"></i>
+                        </div>
+                    </div>
+                </button>
+            </div>
+            <div class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="back-to-top" aria-label="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+
+    <main id="main-content" style="margin-top:30px;">
+        <section class="hero" style="min-height:unset;padding:10px 0 40px;">
+            <div class="container">
+                <div class="section-header" style="margin-top:40px;">
+                    <h2 class="section-title">Birthday Photo Creation</h2>
+                    <p class="section-subtitle">Create a beautiful birthday wish in seconds!</p>
+                </div>
+                <div class="about-content birthday-responsive-flex" style="display:flex;gap:60px;align-items:flex-start;flex-wrap:wrap;">
+                    <div class="about-text birthday-responsive-panel" style="flex:1;max-width:400px;min-width:260px;">
+                        <div class="glass-card" style="padding:32px 24px;">
+                            <label for="image-uploader" class="btn btn-primary birthday-btn" style="display:block;text-align:center;cursor:pointer;margin-bottom:24px;">
+                                <span style="font-size:1.5rem;"><i class="fas fa-upload"></i></span>
+                                <span style="display:block;">Upload Photo</span>
+                            </label>
+                            <input type="file" id="image-uploader" style="display:none;" accept="image/*">
+                            <input type="text" id="text-input" placeholder="Add a name or wish..." aria-label="Name input" class="form-group birthday-theme-input" style="width:100%;margin-bottom:16px;">
+                            <button id="add-text-btn" class="btn btn-secondary birthday-btn" style="width:100%;margin-bottom:16px;">
+                                <i class="fas fa-plus"></i> Add Text
+                            </button>
+                            <button id="download-btn" class="btn btn-primary birthday-btn" style="width:100%;">
+                                <i class="fas fa-download"></i> Download
+                            </button>
+                        </div>
+                    </div>
+                    <div class="about-stats birthday-responsive-canvas" style="flex:2;display:flex;align-items:center;justify-content:center;min-width:260px;">
+                        <div class="glass-card canvas-container" style="padding:24px;min-width:240px;min-height:340px;width:100%;max-width:600px;display:flex;align-items:center;justify-content:center;">
+                            <canvas id="birthdayCanvas" width="600" height="600" aria-label="Birthday Post Canvas" tabindex="0" style="border-radius:20px;box-shadow:0 0 30px rgba(0,212,255,0.15);max-width:100%;height:auto;width:100%;"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+                <style>
+                .birthday-btn {
+                    transition: transform 0.18s cubic-bezier(.4,2,.6,1), box-shadow 0.18s cubic-bezier(.4,2,.6,1), background 0.2s;
+                    will-change: transform, box-shadow;
+                    font-size: 1rem;
+                    min-height: 48px;
+                    padding: 14px 18px;
+                    border-radius: 12px;
+                    box-shadow: 0 2px 8px rgba(0,212,255,0.10);
+                    margin-bottom: 12px;
+                }
+                .birthday-btn:active {
+                    transform: scale(0.97);
+                    box-shadow: 0 1px 4px rgba(0,212,255,0.08);
+                }
+                .birthday-btn:hover, .birthday-btn:focus {
+                    transform: scale(1.04);
+                    box-shadow: 0 6px 24px rgba(0,212,255,0.18);
+                    background: linear-gradient(135deg, var(--electric-blue, #00d4ff), var(--cyber-purple, #8b5cf6));
+                    color: #fff;
+                }
+                @media (max-width: 600px) {
+                    .birthday-btn {
+                        font-size: 0.98rem;
+                        min-height: 44px;
+                        padding: 12px 8px;
+                        border-radius: 10px;
+                        margin-bottom: 10px;
+                    }
+                }
+            .birthday-theme-input {
+                background: var(--glass-bg, rgba(255,255,255,0.05));
+                border: 1.5px solid var(--glass-border, rgba(255,255,255,0.1));
+                border-radius: 12px;
+                color: var(--white, #fff);
+                font-size: 1.1rem;
+                padding: 16px 14px;
+                margin-bottom: 16px;
+                outline: none;
+                box-shadow: var(--glass-shadow, 0 8px 32px rgba(0,0,0,0.3));
+                transition: border-color 0.2s, box-shadow 0.2s;
+            }
+            .birthday-theme-input:focus {
+                border-color: var(--electric-blue, #00d4ff);
+                box-shadow: 0 0 0 2px var(--electric-blue, #00d4ff), var(--glass-shadow, 0 8px 32px rgba(0,0,0,0.3));
+                background: var(--glass-bg, rgba(255,255,255,0.09));
+            }
+        /* Responsive layout for birthday-photo.html */
+        @media (max-width: 900px) {
+            .birthday-responsive-flex {
+                flex-direction: column !important;
+                gap: 32px !important;
+                align-items: stretch !important;
+            }
+            .birthday-responsive-panel, .birthday-responsive-canvas {
+                max-width: 100% !important;
+                min-width: 0 !important;
+            }
+            .glass-card.canvas-container {
+                min-width: 0 !important;
+                max-width: 100% !important;
+                padding: 12px !important;
+            }
+        }
+        @media (max-width: 600px) {
+            .section-header {
+                margin-bottom: 32px !important;
+            }
+            .glass-card {
+                padding: 16px 8px !important;
+            }
+            .glass-card.canvas-container {
+                min-width: 0 !important;
+                min-height: 180px !important;
+                padding: 4px !important;
+            }
+            #birthdayCanvas {
+                width: 100% !important;
+                height: auto !important;
+                max-width: 100vw !important;
+                min-width: 0 !important;
+            }
+            .about-content {
+                gap: 16px !important;
+            }
+        }
+        </style>
+        <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- Canvas Setup ---
+        const canvas = new fabric.Canvas('birthdayCanvas', {
+            backgroundColor: '#f0f0f0',
+        });
+
+        // --- Set Default Template (no selection UI) ---
+        fabric.Image.fromURL('template/t1.png', (img) => {
+            canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas), {
+                scaleX: canvas.width / img.width,
+                scaleY: canvas.height / img.height,
+            });
+        });
+
+        // --- Image Upload Handling ---
+        const imageUploader = document.getElementById('image-uploader');
+        imageUploader.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (f) => {
+                fabric.Image.fromURL(f.target.result, (img) => {
+                    img.scaleToWidth(250);
+                    canvas.add(img);
+                    canvas.centerObject(img);
+                    canvas.setActiveObject(img);
+                    // Move uploaded image to the very back
+                    img.moveTo(0);
+
+                    // Remove any previous template overlay
+                    const prevTemplate = canvas.getObjects('image').find(obj => obj._isTemplate);
+                    if (prevTemplate) canvas.remove(prevTemplate);
+
+                    // Add template overlay as non-moveable, always above the uploaded image
+                    fabric.Image.fromURL('template/t1.png', (templateImg) => {
+                        templateImg.set({
+                            selectable: false,
+                            evented: false,
+                            left: 0,
+                            top: 0,
+                            scaleX: canvas.width / templateImg.width,
+                            scaleY: canvas.height / templateImg.height
+                        });
+                        templateImg._isTemplate = true;
+                        canvas.add(templateImg);
+                        // Move template to just above the uploaded image
+                        templateImg.moveTo(1);
+                        // Move all text objects above the template
+                        canvas.getObjects('i-text').forEach(obj => obj.moveTo(canvas.getObjects().length - 1));
+                        canvas.renderAll();
+                    });
+                });
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // --- Text and Font Handling ---
+        const textInput = document.getElementById('text-input');
+        const addTextBtn = document.getElementById('add-text-btn');
+
+        // Disable the button initially while the font loads
+        addTextBtn.disabled = true;
+        addTextBtn.innerHTML = '<span class="animate-pulse">Loading Font...</span>';
+        addTextBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+
+        // Use the FontFace API to detect when the font is loaded
+        const customFont = new FontFace('Brittany Signature', 'url(Fonts/BrittanySignature.ttf)');
+        customFont.load().then((loadedFont) => {
+            document.fonts.add(loadedFont);
+            // Add default text 'Birthday' to the canvas, centered and upper
+            const defaultText = new fabric.IText('Birthday', {
+                left: canvas.width / 2,
+                top: canvas.height * 0.18, // upper part of canvas
+                originX: 'center',
+                originY: 'center',
+                fontFamily: 'Brittany Signature',
+                fill: '#000000',
+                fontSize: 70,
+                stroke: '#ffffff',
+                strokeWidth: 0.7,
+                paintFirst: 'stroke',
+                selectable: false, // default text is not selectable
+                evented: false
+            });
+            canvas.add(defaultText);
+            canvas.renderAll();
+            // Enable the "Add Text" button now that the font is ready
+            addTextBtn.disabled = false;
+            addTextBtn.innerHTML = '<i class="fas fa-plus"></i> Add Text';
+            addTextBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
+        }).catch(error => {
+            addTextBtn.textContent = 'Font Failed to Load';
+            // Keep it disabled and styled as an error/inactive button
+            addTextBtn.classList.add('bg-red-500', 'cursor-not-allowed');
+            addTextBtn.classList.remove('bg-gray-400');
+        });
+
+        addTextBtn.addEventListener('click', () => {
+            // Remove any previous user message (only one allowed)
+            const prevMsg = canvas.getObjects('i-text').find(obj => obj._isUserMessage);
+            if (prevMsg) canvas.remove(prevMsg);
+            const textValue = textInput.value || 'Name';
+            // Centered and lower (about 70% down)
+            const msgText = new fabric.IText(textValue, {
+                left: canvas.width / 2,
+                top: canvas.height * 0.75,
+                originX: 'center',
+                originY: 'center',
+                fontFamily: 'Brittany Signature',
+                fill: '#000000',
+                fontSize: 50,
+                stroke: '#ffffff',
+                strokeWidth: 0.5,
+                paintFirst: 'stroke',
+                selectable: false,
+                evented: false
+            });
+            msgText._isUserMessage = true;
+            canvas.add(msgText);
+            // Move template overlay just above the uploaded image
+            const templateImg = canvas.getObjects('image').find(obj => obj._isTemplate);
+            if (templateImg) templateImg.moveTo(1);
+            // Move all text objects to the top (above template and image)
+            canvas.getObjects('i-text').forEach(obj => obj.moveTo(canvas.getObjects().length - 1));
+            canvas.renderAll();
+            // Accessibility: focus canvas after adding text
+            document.getElementById('birthdayCanvas').focus();
+        });
+
+        // --- Keyboard Controls (Delete Object) ---
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Delete' || e.key === 'Backspace') {
+                const activeObject = canvas.getActiveObject();
+                if (activeObject) {
+                    canvas.remove(activeObject);
+                }
+            }
+        });
+
+        // --- Download Functionality ---
+        const downloadBtn = document.getElementById('download-btn');
+        downloadBtn.addEventListener('click', () => {
+            // Ensure template overlay is present and on top before exporting
+            const prevTemplate = canvas.getObjects('image').find(obj => obj._isTemplate);
+            const rerenderAndDownload = () => {
+                // Move uploaded image to back, template to middle, text to top
+                const uploadedImg = canvas.getObjects('image').find(obj => !obj._isTemplate);
+                const templateImg = canvas.getObjects('image').find(obj => obj._isTemplate);
+                if (uploadedImg) uploadedImg.moveTo(0);
+                if (templateImg) templateImg.moveTo(1);
+                canvas.getObjects('i-text').forEach(obj => obj.moveTo(canvas.getObjects().length - 1));
+                // Force re-render of all text objects to ensure font is applied
+                canvas.getObjects('i-text').forEach(obj => {
+                    obj.dirty = true;
+                });
+                canvas.discardActiveObject().renderAll();
+                setTimeout(() => {
+                    const dataURL = canvas.toDataURL({
+                        format: 'png',
+                        quality: 1.0,
+                        multiplier: 2 
+                    });
+                    const link = document.createElement('a');
+                    link.href = dataURL;
+                    link.download = 'birthday-post-sasindu.tech.png';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    // Show a toast/alert for download feedback
+                    showToast('Downloaded!');
+                }, 100); // Wait a moment to ensure font is rendered
+            };
+            if (!prevTemplate) {
+                fabric.Image.fromURL('template/t1.png', (templateImg) => {
+                    templateImg.set({
+                        selectable: false,
+                        evented: false,
+                        left: 0,
+                        top: 0,
+                        scaleX: canvas.width / templateImg.width,
+                        scaleY: canvas.height / templateImg.height
+                    });
+                    templateImg._isTemplate = true;
+                    canvas.add(templateImg);
+                    rerenderAndDownload();
+                });
+            } else {
+                rerenderAndDownload();
+            }
+        });
+
+        // --- Toast Feedback ---
+        function showToast(message) {
+            let toast = document.createElement('div');
+            toast.textContent = message;
+            toast.className = 'fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50 text-lg animate-fadein';
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.classList.add('opacity-0');
+                setTimeout(() => document.body.removeChild(toast), 600);
+            }, 1500);
+        }
+    });
+    </script>
+</main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-main">
+                    <div class="footer-brand">
+                        <h3 class="footer-logo">Sasindu Mudawagedara</h3>
+                        <p>Creating digital experiences that inspire and engage. Let's build something amazing together.</p>
+                        <div class="footer-contact">
+                            <div class="contact-item">
+                                <i class="fas fa-envelope" aria-hidden="true"></i>
+                                <a href="mailto:pradeepsasindu2001@gmail.com">pradeepsasindu2001@gmail.com</a>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-phone" aria-hidden="true"></i>
+                                <a href="https://wa.me/+94705187952" target="_blank" rel="noopener">+94 70 518 7952</a>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                                <span>Navinna, Maharagama, Sri Lanka</span>
+                            </div>
+                        </div>
+                        <div class="footer-social">
+                            <a href="https://linkedin.com/in/sasindu-mudawagedara" class="social-link" aria-label="LinkedIn Profile" target="_blank" rel="noopener">
+                                <i class="fab fa-linkedin" aria-hidden="true"></i>
+                            </a>
+                            <a href="https://github.com/SASINDU20013d" class="social-link" aria-label="GitHub Profile" target="_blank" rel="noopener">
+                                <i class="fab fa-github" aria-hidden="true"></i>
+                            </a>
+                            <a href="https://behance.net/sasindu" class="social-link" aria-label="Behance Portfolio" target="_blank" rel="noopener">
+                                <i class="fab fa-behance" aria-hidden="true"></i>
+                            </a>
+                            <a href="https://dribbble.com/sasindu" class="social-link" aria-label="Dribbble Profile" target="_blank" rel="noopener">
+                                <i class="fab fa-dribbble" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="footer-links-group">
+                        <div class="footer-column">
+                            <h4>Quick Links</h4>
+                            <ul>
+                                <li><a href="index.html#home">Home</a></li>
+                                <li><a href="index.html#about">About</a></li>
+                                <li><a href="index.html#services">Services</a></li>
+                                <li><a href="index.html#portfolio">Portfolio</a></li>
+                                <li><a href="index.html#contact">Contact</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-column">
+                            <h4>Services</h4>
+                            <ul>
+                                <li><a href="index.html#services">Web Design</a></li>
+                                <li><a href="index.html#services">Graphic Design</a></li>
+                                <li><a href="index.html#services">UI/UX Design</a></li>
+                                <li><a href="index.html#services">Academic Help</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-column">
+                            <h4>Resources</h4>
+                            <ul>
+                                <li><a href="portfolio-download.html">Download Portfolio</a></li>
+                                <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                                <li><a href="terms-of-service.html">Terms of Service</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <div class="footer-text">
+                        <p>&copy; 2025 Sasindu Mudawagedara. All rights reserved.</p>
+                    </div>
+                    <div class="footer-links">
+                        <a href="privacy-policy.html">Privacy</a>
+                        <a href="terms-of-service.html">Terms</a>
+                        <a href="sitemap.xml">Sitemap</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
 </body>
+    <script src="script.js"></script>
 </html>

@@ -1,0 +1,31 @@
+/* Custom Brittany Signature font */
+@font-face {
+    font-family: 'Brittany Signature';
+    src: url('Fonts/BrittanySignature.ttf') format('truetype');
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+h1 {
+    font-family: 'Brittany Signature', cursive;
+}
+
+.control-panel {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+.canvas-container {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+.template-option.active {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+}
+.custom-btn {
+    transition: all 0.3s ease;
+}
+.custom-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
