@@ -4,9 +4,8 @@
 <head>
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>Birthday Photo Creation | Sasindu Mudawagedara</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -64,9 +63,9 @@
                     <h2 class="section-title">Birthday Photo Creation</h2>
                     <p class="section-subtitle">Create a beautiful birthday wish in seconds!</p>
                 </div>
-                <div class="about-content birthday-responsive-flex" style="display:flex;gap:60px;align-items:flex-start;flex-wrap:wrap;">
-                    <div class="about-text birthday-responsive-panel" style="flex:1;max-width:400px;min-width:260px;">
-                        <div class="glass-card" style="padding:32px 24px;">
+                <div class="about-content birthday-responsive-flex birthday-layout" style="display:flex;gap:60px;align-items:flex-start;flex-wrap:wrap;">
+                    <div class="about-text birthday-responsive-panel birthday-controls" style="flex:1;max-width:400px;min-width:260px;">
+                        <div class="glass-card birthday-controls-card" style="padding:32px 24px;">
                             <label for="image-uploader" class="btn btn-primary birthday-btn" style="display:block;text-align:center;cursor:pointer;margin-bottom:24px;">
                                 <span style="font-size:1.5rem;"><i class="fas fa-upload"></i></span>
                                 <span style="display:block;">Upload Photo</span>
@@ -81,9 +80,11 @@
                             </button>
                         </div>
                     </div>
-                    <div class="about-stats birthday-responsive-canvas" style="flex:2;display:flex;align-items:center;justify-content:center;min-width:260px;">
-                        <div class="glass-card canvas-container" style="padding:24px;min-width:240px;min-height:340px;width:100%;max-width:600px;display:flex;align-items:center;justify-content:center;">
-                            <canvas id="birthdayCanvas" width="600" height="600" aria-label="Birthday Post Canvas" tabindex="0" style="border-radius:20px;box-shadow:0 0 30px rgba(0,212,255,0.15);max-width:100%;height:auto;width:100%;"></canvas>
+                    <div class="about-stats birthday-responsive-canvas birthday-canvas-wrapper" style="flex:2;display:flex;align-items:center;justify-content:center;min-width:260px;">
+                        <div class="glass-card canvas-container birthday-canvas-card" style="padding:24px;min-width:240px;min-height:340px;width:100%;max-width:600px;display:flex;align-items:center;justify-content:center;">
+                            <div class="canvas-aspect-holder">
+                                <canvas id="birthdayCanvas" width="600" height="600" aria-label="Birthday Post Canvas" tabindex="0" style="border-radius:20px;box-shadow:0 0 30px rgba(0,212,255,0.15);max-width:100%;height:auto;width:100%;"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -92,6 +93,33 @@
     </main>
 
                 <style>
+                /* === Birthday Tool Mobile Enhancements === */
+                .birthday-layout {gap:48px;}
+                .birthday-controls-card {position:sticky;top:90px;}
+                .birthday-canvas-card {transition:height .3s ease;}
+                .canvas-aspect-holder {width:100%;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;}
+                #birthdayCanvas {touch-action:none;}
+                @media (max-width: 1100px){
+                    .birthday-controls-card {position:static;}
+                }
+                @media (max-width: 900px){
+                    .birthday-layout {gap:32px !important;}
+                }
+                @media (max-width: 680px){
+                    .birthday-layout {gap:24px !important;}
+                    .birthday-controls {order:2;}
+                    .birthday-canvas-wrapper {order:1;}
+                    .birthday-controls-card {padding:24px 18px !important;}
+                }
+                @media (max-width: 540px){
+                    .birthday-controls-card {padding:20px 14px !important;}
+                    .birthday-btn {min-height:46px;}
+                    .birthday-theme-input {font-size:1rem;padding:14px 12px;}
+                }
+                @media (max-width: 420px){
+                    .birthday-controls-card {padding:18px 12px !important;}
+                    .birthday-btn {font-size:.9rem;padding:12px 10px;}
+                }
                 .birthday-btn {
                     transition: transform 0.18s cubic-bezier(.4,2,.6,1), box-shadow 0.18s cubic-bezier(.4,2,.6,1), background 0.2s;
                     will-change: transform, box-shadow;
@@ -140,50 +168,32 @@
             }
         /* Responsive layout for birthday-photo.html */
         @media (max-width: 900px) {
-            .birthday-responsive-flex {
-                flex-direction: column !important;
-                gap: 32px !important;
-                align-items: stretch !important;
-            }
-            .birthday-responsive-panel, .birthday-responsive-canvas {
-                max-width: 100% !important;
-                min-width: 0 !important;
-            }
-            .glass-card.canvas-container {
-                min-width: 0 !important;
-                max-width: 100% !important;
-                padding: 12px !important;
-            }
+            .birthday-responsive-flex {flex-direction: column !important;align-items: stretch !important;}
+            .birthday-responsive-panel, .birthday-responsive-canvas {max-width:100% !important;min-width:0 !important;}
+            .glass-card.canvas-container {min-width:0 !important;max-width:100% !important;padding:16px !important;}
         }
         @media (max-width: 600px) {
-            .section-header {
-                margin-bottom: 32px !important;
-            }
-            .glass-card {
-                padding: 16px 8px !important;
-            }
-            .glass-card.canvas-container {
-                min-width: 0 !important;
-                min-height: 180px !important;
-                padding: 4px !important;
-            }
-            #birthdayCanvas {
-                width: 100% !important;
-                height: auto !important;
-                max-width: 100vw !important;
-                min-width: 0 !important;
-            }
-            .about-content {
-                gap: 16px !important;
-            }
+            .section-header {margin-bottom: 32px !important;}
+            .glass-card.canvas-container {min-width:0 !important;min-height:240px !important;padding:8px !important;}
+            .about-content {gap:20px !important;}
         }
         </style>
         <script>
     document.addEventListener('DOMContentLoaded', () => {
         // --- Canvas Setup ---
-        const canvas = new fabric.Canvas('birthdayCanvas', {
-            backgroundColor: '#f0f0f0',
-        });
+        const canvasEl = document.getElementById('birthdayCanvas');
+        const canvas = new fabric.Canvas('birthdayCanvas', { backgroundColor: '#f0f0f0' });
+        // Keep logical canvas size fixed (600x600) for consistent font sizes & export.
+        function resizeCanvasDisplay() {
+            const holder = canvasEl.parentElement; // aspect holder
+            if (!holder) return;
+            const available = holder.clientWidth;
+            const target = Math.min(available, 560); // small padding on mobile
+            canvasEl.style.width = target + 'px';
+            canvasEl.style.height = target + 'px';
+        }
+        window.addEventListener('resize', resizeCanvasDisplay);
+        window.addEventListener('orientationchange', () => setTimeout(resizeCanvasDisplay, 50));
 
         // Helper to always set correct z-order: image (0), template (1), all text (top)
         function fixLayerOrder() {
@@ -200,12 +210,13 @@
 
         // --- Set Default Template (no selection UI) ---
         fabric.Image.fromURL('Template/t1.png', (img) => {
-            canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas), {
-                scaleX: canvas.width / img.width,
-                scaleY: canvas.height / img.height,
+            canvas.setBackgroundImage(img, () => {
+                img.scaleX = canvas.width / img.width;
+                img.scaleY = canvas.height / img.height;
+                canvas.renderAll();
+                fixLayerOrder();
+                resizeCanvasDisplay(); // ensure initial fit
             });
-            // No uploaded image yet, so just template as background
-            fixLayerOrder();
         });
 
         // --- Image Upload Handling ---
@@ -258,8 +269,8 @@
             document.fonts.add(loadedFont);
             // Add default text 'Birthday' to the canvas, centered and upper
             const defaultText = new fabric.IText('Birthday', {
-                left: canvas.width / 2,
-                top: canvas.height * 0.18, // upper part of canvas
+                left: canvas.getWidth() / 2,
+                top: canvas.getHeight() * 0.18, // upper part of canvas
                 originX: 'center',
                 originY: 'center',
                 fontFamily: 'Brittany Signature',
@@ -291,8 +302,8 @@
             const textValue = textInput.value || 'Name';
             // Centered and lower (about 70% down)
             const msgText = new fabric.IText(textValue, {
-                left: canvas.width / 2,
-                top: canvas.height * 0.75,
+                left: canvas.getWidth() / 2,
+                top: canvas.getHeight() * 0.75,
                 originX: 'center',
                 originY: 'center',
                 fontFamily: 'Brittany Signature',
@@ -341,7 +352,7 @@
                     });
                     const link = document.createElement('a');
                     link.href = dataURL;
-                    link.download = 'birthday-post-sasindu.tech.png';
+                    link.download = 'birthday-post-sasindu-tech.png';
                     document.body.appendChild(link);
                     link.click();
                     document.body.removeChild(link);
@@ -379,9 +390,10 @@
                 setTimeout(() => document.body.removeChild(toast), 600);
             }, 1500);
         }
+        // Trigger initial responsive sizing after a short delay (fonts/layout settle)
+    setTimeout(resizeCanvasDisplay, 120);
     });
     </script>
-</main>
 
     <!-- Footer -->
     <footer class="footer">
