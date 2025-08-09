@@ -113,27 +113,28 @@ document.addEventListener('click', (e) => {
 // Enhanced Smooth Scrolling for Navigation Links
 navLinks.forEach(link => {
     link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const targetId = link.getAttribute('href');
-        const targetSection = document.querySelector(targetId);
-        
-        if (targetSection) {
-            const offsetTop = targetSection.offsetTop - 80;
-            window.scrollTo({
-                top: offsetTop,
-                behavior: 'smooth'
-            });
+        const href = link.getAttribute('href');
+        // Only prevent default for anchor links (starting with #)
+        if (href && href.startsWith('#')) {
+            e.preventDefault();
+            const targetSection = document.querySelector(href);
+            if (targetSection) {
+                const offsetTop = targetSection.offsetTop - 80;
+                window.scrollTo({
+                    top: offsetTop,
+                    behavior: 'smooth'
+                });
+            }
+            // Close mobile menu
+            navMenu.classList.remove('active');
+            navToggle.classList.remove('active');
+            navToggle.setAttribute('aria-expanded', 'false');
+            document.body.style.overflow = '';
+            // Update active link
+            navLinks.forEach(navLink => navLink.classList.remove('active'));
+            link.classList.add('active');
         }
-        
-        // Close mobile menu
-        navMenu.classList.remove('active');
-        navToggle.classList.remove('active');
-        navToggle.setAttribute('aria-expanded', 'false');
-        document.body.style.overflow = '';
-        
-        // Update active link
-        navLinks.forEach(navLink => navLink.classList.remove('active'));
-        link.classList.add('active');
+        // If not an anchor link, let browser handle navigation
     });
 });
 
