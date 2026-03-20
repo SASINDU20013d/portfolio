@@ -1,492 +1,2042 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>Birthday Photo Creation | Sasindu Mudawagedara</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
-    <link rel="shortcut icon" href="favicon.svg" type="image/svg+xml">
-    <!-- PNG Favicons for all major sizes -->
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
-    <link rel="icon" type="image/png" sizes="24x24" href="assets/favicon-24.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
-    <link rel="icon" type="image/png" sizes="48x48" href="assets/favicon-48.png">
-    <link rel="icon" type="image/png" sizes="64x64" href="assets/favicon-64.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="assets/favicon-96.png">
-    <link rel="icon" type="image/png" sizes="128x128" href="assets/favicon-128.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
-    <link rel="icon" type="image/png" sizes="256x256" href="assets/favicon-256.png">
-    <link rel="icon" type="image/png" sizes="384x384" href="assets/favicon-384.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="assets/icon-512.png">
-    <!-- Fabric.js for canvas manipulation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
+
+    <style>
+    /* ======================================================
+       ROOT VARIABLES & RESET
+    ====================================================== */
+    :root {
+        --bg-primary: #080c14;
+        --bg-secondary: #0d1525;
+        --bg-card: rgba(255,255,255,0.04);
+        --border: rgba(255,255,255,0.08);
+        --border-active: rgba(0,212,255,0.5);
+        --accent: #00d4ff;
+        --accent2: #8b5cf6;
+        --accent3: #f472b6;
+        --text-primary: #f0f4ff;
+        --text-secondary: #8899bb;
+        --text-muted: #4a5a7a;
+        --radius: 16px;
+        --radius-sm: 10px;
+        --shadow-glow: 0 0 24px rgba(0,212,255,0.12);
+        --shadow-card: 0 8px 40px rgba(0,0,0,0.4);
+        --transition: 0.2s cubic-bezier(.4,2,.6,1);
+        --nav-height: 64px;
+        --font-display: 'Orbitron', sans-serif;
+        --font-body: 'Rajdhani', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+        font-family: var(--font-body);
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        min-height: 100vh;
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    /* ======================================================
+       BACKGROUND ATMOSPHERE
+    ====================================================== */
+    body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background:
+            radial-gradient(ellipse 80% 60% at 20% -10%, rgba(0,212,255,0.07) 0%, transparent 70%),
+            radial-gradient(ellipse 60% 50% at 85% 100%, rgba(139,92,246,0.07) 0%, transparent 70%);
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    /* ======================================================
+       NAVBAR
+    ====================================================== */
+    .navbar {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        height: var(--nav-height);
+        background: rgba(8,12,20,0.85);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-bottom: 1px solid var(--border);
+    }
+
+    .nav-container {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 0 20px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+    }
+
+    .nav-logo {
+        font-family: var(--font-display);
+        font-size: 1.2rem;
+        font-weight: 900;
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-decoration: none;
+        flex-shrink: 0;
+    }
+
+    .nav-menu {
+        display: flex;
+        list-style: none;
+        gap: 8px;
+    }
+
+    .nav-link {
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        padding: 8px 14px;
+        border-radius: var(--radius-sm);
+        transition: color var(--transition), background var(--transition);
+        text-transform: uppercase;
+    }
+
+    .nav-link:hover { color: var(--accent); background: rgba(0,212,255,0.08); }
+
+    /* ======================================================
+       SKIP LINK
+    ====================================================== */
+    .skip-to-content {
+        position: absolute;
+        left: -9999px;
+        top: 8px;
+        padding: 8px 16px;
+        background: var(--accent);
+        color: #000;
+        font-weight: 700;
+        border-radius: 8px;
+        text-decoration: none;
+        z-index: 9999;
+    }
+    .skip-to-content:focus { left: 8px; }
+
+    /* ======================================================
+       BACK TO TOP
+    ====================================================== */
+    .back-to-top {
+        position: fixed;
+        bottom: 24px;
+        right: 20px;
+        z-index: 500;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transform: translateY(16px);
+        transition: opacity 0.3s, transform 0.3s;
+        box-shadow: 0 4px 20px rgba(0,212,255,0.3);
+    }
+    .back-to-top.visible { opacity: 1; transform: translateY(0); }
+
+    /* ======================================================
+       MAIN LAYOUT
+    ====================================================== */
+    #main-content {
+        position: relative;
+        z-index: 1;
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 32px 20px 60px;
+    }
+
+    /* ======================================================
+       PAGE HEADER
+    ====================================================== */
+    .page-header {
+        text-align: center;
+        margin-bottom: 40px;
+        padding-top: 8px;
+    }
+
+    .page-header .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        background: rgba(0,212,255,0.1);
+        border: 1px solid rgba(0,212,255,0.2);
+        border-radius: 999px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 16px;
+    }
+
+    .page-title {
+        font-family: var(--font-display);
+        font-size: clamp(1.6rem, 5vw, 2.8rem);
+        font-weight: 900;
+        letter-spacing: -0.02em;
+        line-height: 1.1;
+        background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 60%, var(--accent2) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 10px;
+    }
+
+    .page-subtitle {
+        color: var(--text-secondary);
+        font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+        font-weight: 400;
+    }
+
+    /* ======================================================
+       STEPS INDICATOR
+    ====================================================== */
+    .steps-row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0;
+        margin-bottom: 36px;
+        flex-wrap: wrap;
+        row-gap: 12px;
+    }
+
+    .step-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .step-num {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: var(--bg-card);
+        border: 1.5px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: var(--text-secondary);
+        transition: all 0.3s;
+        flex-shrink: 0;
+    }
+
+    .step-item.active .step-num {
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        border-color: transparent;
+        color: #fff;
+        box-shadow: 0 0 16px rgba(0,212,255,0.3);
+    }
+
+    .step-item.done .step-num {
+        background: rgba(0,212,255,0.15);
+        border-color: var(--accent);
+        color: var(--accent);
+    }
+
+    .step-label {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        white-space: nowrap;
+    }
+
+    .step-item.active .step-label { color: var(--text-primary); }
+
+    .step-connector {
+        width: 32px;
+        height: 1px;
+        background: var(--border);
+        flex-shrink: 0;
+        margin: 0 4px;
+    }
+
+    @media (max-width: 480px) {
+        .step-label { display: none; }
+        .step-connector { width: 16px; }
+    }
+
+    /* ======================================================
+       MAIN EDITOR GRID
+    ====================================================== */
+    .editor-grid {
+        display: grid;
+        grid-template-columns: 340px 1fr;
+        gap: 24px;
+        align-items: start;
+    }
+
+    @media (max-width: 900px) {
+        .editor-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* ======================================================
+       GLASS CARD
+    ====================================================== */
+    .card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        overflow: hidden;
+    }
+
+    .card-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .card-header-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.9rem;
+        flex-shrink: 0;
+    }
+
+    .card-title {
+        font-size: 0.85rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--text-primary);
+    }
+
+    .card-body { padding: 20px; }
+
+    /* ======================================================
+       CONTROLS SIDEBAR
+    ====================================================== */
+    .controls-sidebar {
+        position: sticky;
+        top: calc(var(--nav-height) + 16px);
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    @media (max-width: 900px) {
+        .controls-sidebar {
+            position: static;
+            order: 2;
+        }
+    }
+
+    /* ======================================================
+       SECTION LABELS
+    ====================================================== */
+    .section-label {
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        margin-bottom: 10px;
+    }
+
+    /* ======================================================
+       UPLOAD AREA
+    ====================================================== */
+    .upload-zone {
+        position: relative;
+        border: 2px dashed var(--border);
+        border-radius: var(--radius-sm);
+        padding: 28px 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: border-color 0.2s, background 0.2s;
+        background: rgba(0,212,255,0.02);
+    }
+
+    .upload-zone:hover, .upload-zone.drag-over {
+        border-color: var(--accent);
+        background: rgba(0,212,255,0.06);
+    }
+
+    .upload-zone input[type="file"] {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        cursor: pointer;
+        width: 100%;
+        height: 100%;
+    }
+
+    .upload-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, rgba(0,212,255,0.15), rgba(139,92,246,0.15));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        color: var(--accent);
+        margin: 0 auto 10px;
+    }
+
+    .upload-title {
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 4px;
+    }
+
+    .upload-hint {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+    }
+
+    /* ======================================================
+       FORM CONTROLS
+    ====================================================== */
+    .form-group { margin-bottom: 14px; }
+
+    .form-label {
+        display: block;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        margin-bottom: 7px;
+    }
+
+    .form-input {
+        width: 100%;
+        background: rgba(255,255,255,0.04);
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius-sm);
+        color: var(--text-primary);
+        font-family: var(--font-body);
+        font-size: 1rem;
+        padding: 12px 14px;
+        outline: none;
+        transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    }
+
+    .form-input:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(0,212,255,0.12);
+        background: rgba(0,212,255,0.04);
+    }
+
+    .form-input::placeholder { color: var(--text-muted); }
+
+    select.form-input {
+        appearance: none;
+        -webkit-appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%234a5a7a' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        padding-right: 36px;
+        cursor: pointer;
+    }
+
+    select.form-input option { background: #0d1525; }
+
+    /* Range slider */
+    .form-range {
+        width: 100%;
+        height: 4px;
+        border-radius: 2px;
+        background: var(--border);
+        outline: none;
+        cursor: pointer;
+        -webkit-appearance: none;
+        appearance: none;
+    }
+
+    .form-range::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        cursor: pointer;
+        box-shadow: 0 0 8px rgba(0,212,255,0.4);
+    }
+
+    .form-range::-moz-range-thumb {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        cursor: pointer;
+        border: none;
+    }
+
+    .range-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .range-val {
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: var(--accent);
+        min-width: 32px;
+        text-align: right;
+    }
+
+    /* Color picker row */
+    .color-row {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 10px;
+    }
+
+    .color-swatch {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: transform 0.15s, border-color 0.15s;
+        flex-shrink: 0;
+    }
+
+    .color-swatch:hover, .color-swatch.active {
+        transform: scale(1.2);
+        border-color: #fff;
+    }
+
+    .color-picker-wrap {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    input[type="color"] {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 2px solid var(--border);
+        cursor: pointer;
+        padding: 2px;
+        background: none;
+        outline: none;
+        -webkit-appearance: none;
+        overflow: hidden;
+    }
+
+    input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; border-radius: 50%; }
+    input[type="color"]::-webkit-color-swatch { border-radius: 50%; border: none; }
+
+    /* Style toggles */
+    .toggle-row {
+        display: flex;
+        gap: 8px;
+    }
+
+    .style-toggle {
+        flex: 1;
+        padding: 8px 10px;
+        border-radius: var(--radius-sm);
+        background: rgba(255,255,255,0.04);
+        border: 1.5px solid var(--border);
+        color: var(--text-secondary);
+        font-family: var(--font-body);
+        font-size: 0.85rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.18s;
+        text-align: center;
+    }
+
+    .style-toggle:hover { border-color: var(--accent); color: var(--accent); }
+    .style-toggle.active {
+        background: rgba(0,212,255,0.12);
+        border-color: var(--accent);
+        color: var(--accent);
+    }
+
+    /* ======================================================
+       EMOJI PANEL
+    ====================================================== */
+    .emoji-grid {
+        display: grid;
+        grid-template-columns: repeat(8, 1fr);
+        gap: 4px;
+    }
+
+    .emoji-btn {
+        background: none;
+        border: 1.5px solid transparent;
+        border-radius: 8px;
+        font-size: 1.3rem;
+        padding: 6px;
+        cursor: pointer;
+        transition: background 0.15s, border-color 0.15s, transform 0.15s;
+        text-align: center;
+        line-height: 1;
+    }
+
+    .emoji-btn:hover {
+        background: rgba(255,255,255,0.06);
+        border-color: var(--border);
+        transform: scale(1.2);
+    }
+
+    /* ======================================================
+       BUTTONS
+    ====================================================== */
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 13px 18px;
+        border-radius: var(--radius-sm);
+        font-family: var(--font-body);
+        font-size: 0.95rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+        transition: transform var(--transition), box-shadow var(--transition), opacity 0.2s;
+        position: relative;
+        overflow: hidden;
+        white-space: nowrap;
+        min-height: 48px;
+        width: 100%;
+    }
+
+    .btn::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: rgba(255,255,255,0);
+        transition: background 0.2s;
+    }
+
+    .btn:hover::after { background: rgba(255,255,255,0.05); }
+    .btn:active { transform: scale(0.97); }
+    .btn:disabled { opacity: 0.45; cursor: not-allowed; pointer-events: none; }
+
+    .btn-primary {
+        background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+        color: #fff;
+        box-shadow: 0 4px 20px rgba(0,212,255,0.2);
+    }
+
+    .btn-primary:hover {
+        box-shadow: 0 6px 28px rgba(0,212,255,0.35);
+        transform: translateY(-1px) scale(1.01);
+    }
+
+    .btn-secondary {
+        background: rgba(255,255,255,0.06);
+        color: var(--text-primary);
+        border: 1.5px solid var(--border);
+    }
+
+    .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+    .btn-danger {
+        background: rgba(239,68,68,0.1);
+        color: #ef4444;
+        border: 1.5px solid rgba(239,68,68,0.25);
+    }
+
+    .btn-danger:hover { background: rgba(239,68,68,0.18); }
+
+    .btn-success {
+        background: linear-gradient(135deg, #059669, #10b981);
+        color: #fff;
+        box-shadow: 0 4px 20px rgba(16,185,129,0.25);
+    }
+
+    .btn-group {
+        display: flex;
+        gap: 8px;
+    }
+
+    .btn-group .btn { flex: 1; }
+
+    .btn-icon {
+        width: 40px;
+        height: 40px;
+        min-height: 40px;
+        padding: 0;
+        border-radius: var(--radius-sm);
+        font-size: 0.9rem;
+        flex-shrink: 0;
+    }
+
+    /* ======================================================
+       CANVAS PANEL
+    ====================================================== */
+    .canvas-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    @media (max-width: 900px) {
+        .canvas-panel { order: 1; }
+    }
+
+    .canvas-wrap {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        border-radius: var(--radius);
+        overflow: hidden;
+        background: #1a1a2e;
+        border: 1px solid var(--border);
+    }
+
+    .canvas-wrap canvas {
+        width: 100% !important;
+        height: 100% !important;
+        display: block;
+        touch-action: none;
+    }
+
+    /* Canvas overlay hint */
+    .canvas-hint {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        background: rgba(8,12,20,0.7);
+        pointer-events: none;
+        opacity: 1;
+        transition: opacity 0.4s;
+        border-radius: var(--radius);
+        text-align: center;
+        padding: 20px;
+    }
+
+    .canvas-hint.hidden { opacity: 0; }
+
+    .canvas-hint-icon { font-size: 2.5rem; line-height: 1; }
+    .canvas-hint-text { font-size: 0.9rem; color: var(--text-secondary); max-width: 220px; }
+
+    /* ======================================================
+       CANVAS TOOLBAR
+    ====================================================== */
+    .canvas-toolbar {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .canvas-toolbar .btn-icon {
+        background: var(--bg-card);
+        border: 1.5px solid var(--border);
+        color: var(--text-secondary);
+    }
+
+    .canvas-toolbar .btn-icon:hover { border-color: var(--accent); color: var(--accent); }
+
+    .canvas-toolbar-spacer { flex: 1; }
+
+    .canvas-size-label {
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        font-weight: 600;
+        letter-spacing: 0.06em;
+    }
+
+    /* ======================================================
+       SELECTED OBJECT CONTROLS
+    ====================================================== */
+    .obj-controls {
+        display: none;
+        flex-direction: column;
+        gap: 12px;
+        padding: 16px;
+        background: rgba(0,212,255,0.04);
+        border: 1px solid rgba(0,212,255,0.12);
+        border-radius: var(--radius-sm);
+    }
+
+    .obj-controls.visible { display: flex; }
+
+    .obj-controls-title {
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--accent);
+    }
+
+    /* ======================================================
+       ACCORDION SECTIONS
+    ====================================================== */
+    .accordion { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); }
+
+    .acc-item { border-bottom: 1px solid var(--border); }
+    .acc-item:last-child { border-bottom: none; }
+
+    .acc-toggle {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 16px;
+        background: var(--bg-card);
+        border: none;
+        cursor: pointer;
+        color: var(--text-primary);
+        font-family: var(--font-body);
+        font-size: 0.85rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        text-align: left;
+        transition: background 0.2s;
+    }
+
+    .acc-toggle:hover { background: rgba(255,255,255,0.04); }
+
+    .acc-toggle .acc-icon {
+        font-size: 0.9rem;
+        color: var(--accent);
+        flex-shrink: 0;
+    }
+
+    .acc-toggle .acc-chevron {
+        margin-left: auto;
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        transition: transform 0.25s;
+    }
+
+    .acc-item.open .acc-chevron { transform: rotate(180deg); }
+
+    .acc-body {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        background: rgba(0,0,0,0.2);
+    }
+
+    .acc-item.open .acc-body { max-height: 500px; }
+
+    .acc-body-inner { padding: 16px; }
+
+    /* ======================================================
+       TOAST
+    ====================================================== */
+    .toast {
+        position: fixed;
+        bottom: 28px;
+        left: 50%;
+        transform: translateX(-50%) translateY(20px);
+        background: linear-gradient(135deg, #059669, #10b981);
+        color: #fff;
+        padding: 12px 24px;
+        border-radius: 999px;
+        font-size: 0.9rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        z-index: 9999;
+        box-shadow: 0 8px 32px rgba(16,185,129,0.3);
+        opacity: 0;
+        transition: opacity 0.25s, transform 0.25s;
+        pointer-events: none;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ======================================================
+       FOOTER
+    ====================================================== */
+    footer {
+        border-top: 1px solid var(--border);
+        padding: 40px 20px;
+        margin-top: 40px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .footer-inner {
+        max-width: 1280px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+        gap: 40px;
+    }
+
+    @media (max-width: 900px) {
+        .footer-inner { grid-template-columns: 1fr 1fr; gap: 28px; }
+    }
+
+    @media (max-width: 520px) {
+        .footer-inner { grid-template-columns: 1fr; gap: 20px; }
+    }
+
+    .footer-brand h3 {
+        font-family: var(--font-display);
+        font-size: 1rem;
+        font-weight: 900;
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 10px;
+    }
+
+    .footer-brand p {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        line-height: 1.6;
+        margin-bottom: 16px;
+    }
+
+    .footer-contact { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+
+    .contact-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+    }
+
+    .contact-item i { color: var(--accent); width: 14px; flex-shrink: 0; }
+    .contact-item a { color: var(--text-secondary); text-decoration: none; }
+    .contact-item a:hover { color: var(--accent); }
+
+    .footer-social { display: flex; gap: 10px; }
+
+    .social-link {
+        width: 34px;
+        height: 34px;
+        border-radius: 8px;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+        text-decoration: none;
+        transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+
+    .social-link:hover { background: rgba(0,212,255,0.1); color: var(--accent); border-color: var(--accent); }
+
+    .footer-col h4 {
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--text-secondary);
+        margin-bottom: 14px;
+    }
+
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+
+    .footer-col ul li a {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+
+    .footer-col ul li a:hover { color: var(--accent); }
+
+    .footer-bottom {
+        max-width: 1280px;
+        margin: 28px auto 0;
+        padding-top: 20px;
+        border-top: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+        font-size: 0.78rem;
+        color: var(--text-muted);
+    }
+
+    .footer-bottom a { color: var(--text-muted); text-decoration: none; }
+    .footer-bottom a:hover { color: var(--accent); }
+    .footer-bottom-links { display: flex; gap: 16px; }
+
+    /* ======================================================
+       RESPONSIVE HELPERS
+    ====================================================== */
+    @media (max-width: 480px) {
+        .btn { min-height: 46px; font-size: 0.9rem; padding: 12px 14px; }
+        .card-body { padding: 16px; }
+    }
+
+    /* ======================================================
+       LOADING SPINNER ON BUTTON
+    ====================================================== */
+    .btn .spinner {
+        width: 16px;
+        height: 16px;
+        border: 2px solid rgba(255,255,255,0.3);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+        flex-shrink: 0;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ======================================================
+       PROGRESS BAR
+    ====================================================== */
+    .progress-bar {
+        height: 3px;
+        background: linear-gradient(90deg, var(--accent), var(--accent2));
+        border-radius: 2px;
+        transition: width 0.4s ease;
+        box-shadow: 0 0 8px rgba(0,212,255,0.4);
+    }
+
+    .progress-track {
+        background: var(--border);
+        border-radius: 2px;
+        overflow: hidden;
+        margin-bottom: 16px;
+    }
+
+    /* ======================================================
+       INFO BOX
+    ====================================================== */
+    .info-box {
+        background: rgba(0,212,255,0.05);
+        border: 1px solid rgba(0,212,255,0.12);
+        border-radius: var(--radius-sm);
+        padding: 12px 14px;
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        line-height: 1.5;
+    }
+
+    .info-box i { color: var(--accent); margin-top: 2px; flex-shrink: 0; }
+
+    /* tip tags */
+    .tip {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        padding: 3px 8px;
+        background: rgba(255,255,255,0.04);
+        border-radius: 999px;
+        border: 1px solid var(--border);
+    }
+    </style>
 </head>
 
 <body>
-    <!-- Skip to Content (Accessibility) -->
     <a href="#main-content" class="skip-to-content">Skip to main content</a>
-    <!-- Navigation -->
-    <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
+
+    <!-- Navbar -->
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
         <div class="nav-container">
-            <div class="nav-logo">
-                <span class="logo-text">SM</span>
-            </div>
-            <ul class="nav-menu" id="nav-menu">
-                <li class="nav-item">
-                    <a href="https://sasindu.tech/" class="nav-link" aria-label="Go to Home page">Home</a>
-                </li>
+            <a href="https://sasindu.tech/" class="nav-logo" aria-label="Sasindu Tech Home">SM</a>
+            <ul class="nav-menu">
+                <li><a href="https://sasindu.tech/" class="nav-link">Home</a></li>
             </ul>
-            <div class="nav-controls">
-                <button class="theme-switcher" id="theme-switcher" aria-label="Toggle dark/light mode">
-                    <div class="switcher-track">
-                        <div class="switcher-thumb">
-                            <i class="fas fa-sun sun-icon"></i>
-                            <i class="fas fa-moon moon-icon"></i>
-                        </div>
-                    </div>
-                </button>
-            </div>
-            <div class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </div>
         </div>
     </nav>
 
-    <!-- Back to Top Button -->
+    <!-- Back to Top -->
     <button class="back-to-top" id="back-to-top" aria-label="Back to top">
         <i class="fas fa-arrow-up"></i>
     </button>
 
+    <!-- Toast -->
+    <div class="toast" id="toast" role="status" aria-live="polite">
+        <i class="fas fa-check-circle"></i>
+        <span id="toast-msg">Done!</span>
+    </div>
 
-    <main id="main-content" style="margin-top:30px;">
-        <section class="hero" style="min-height:unset;padding:10px 0 40px;">
-            <div class="container">
-                <div class="section-header" style="margin-top:40px;">
-                    <h2 class="section-title">Birthday Photo Creation</h2>
-                    <p class="section-subtitle">Create a beautiful birthday wish in seconds!</p>
-                </div>
-                <div class="about-content birthday-responsive-flex birthday-layout" style="display:flex;gap:60px;align-items:flex-start;flex-wrap:wrap;">
-                    <div class="about-text birthday-responsive-panel birthday-controls" style="flex:1;max-width:400px;min-width:260px;">
-                        <div class="glass-card birthday-controls-card" style="padding:32px 24px;">
-                            <label for="image-uploader" class="btn btn-primary birthday-btn" style="display:block;text-align:center;cursor:pointer;margin-bottom:24px;">
-                                <span style="font-size:1.5rem;"><i class="fas fa-upload"></i></span>
-                                <span style="display:block;">Upload Photo</span>
-                            </label>
-                            <input type="file" id="image-uploader" style="display:none;" accept="image/*">
-                            <input type="text" id="text-input" placeholder="Add a name or wish..." aria-label="Name input" class="form-group birthday-theme-input" style="width:100%;margin-bottom:16px;">
-                            <button id="add-text-btn" class="btn btn-secondary birthday-btn" style="width:100%;margin-bottom:16px;">
-                                <i class="fas fa-plus"></i> Add Text
+    <main id="main-content">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="badge"><i class="fas fa-birthday-cake"></i> Birthday Studio</div>
+            <h1 class="page-title">Birthday Photo Creator</h1>
+            <p class="page-subtitle">Design a beautiful birthday wish in seconds — no experience needed</p>
+        </div>
+
+        <!-- Steps Indicator -->
+        <div class="steps-row" id="steps-row">
+            <div class="step-item active" id="step-1">
+                <div class="step-num">1</div>
+                <span class="step-label">Upload</span>
+            </div>
+            <div class="step-connector"></div>
+            <div class="step-item" id="step-2">
+                <div class="step-num">2</div>
+                <span class="step-label">Customise</span>
+            </div>
+            <div class="step-connector"></div>
+            <div class="step-item" id="step-3">
+                <div class="step-num">3</div>
+                <span class="step-label">Download</span>
+            </div>
+        </div>
+
+        <!-- Progress -->
+        <div class="progress-track">
+            <div class="progress-bar" id="progress-bar" style="width:10%"></div>
+        </div>
+
+        <!-- Editor Grid -->
+        <div class="editor-grid">
+
+            <!-- CONTROLS SIDEBAR -->
+            <aside class="controls-sidebar" aria-label="Editor Controls">
+
+                <!-- UPLOAD -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-header-icon" style="background:rgba(0,212,255,0.12);color:var(--accent);">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <span class="card-title">Photo</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="upload-zone" id="upload-zone" role="button" tabindex="0" aria-label="Upload photo">
+                            <input type="file" id="image-uploader" accept="image/*" aria-label="Upload birthday photo">
+                            <div class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                            <p class="upload-title">Tap to upload</p>
+                            <p class="upload-hint">or drag & drop an image here<br>PNG, JPG, WEBP • Max 10MB</p>
+                        </div>
+                        <div style="margin-top:12px;" class="btn-group">
+                            <button class="btn btn-secondary btn-icon" id="zoom-in-btn" title="Zoom photo in" aria-label="Zoom in">
+                                <i class="fas fa-search-plus"></i>
                             </button>
-                            <button id="download-btn" class="btn btn-primary birthday-btn" style="width:100%;">
-                                <i class="fas fa-download"></i> Download
+                            <button class="btn btn-secondary btn-icon" id="zoom-out-btn" title="Zoom photo out" aria-label="Zoom out">
+                                <i class="fas fa-search-minus"></i>
+                            </button>
+                            <button class="btn btn-secondary btn-icon" id="center-img-btn" title="Centre photo" aria-label="Centre image">
+                                <i class="fas fa-compress-arrows-alt"></i>
+                            </button>
+                            <button class="btn btn-secondary btn-icon" id="remove-img-btn" title="Remove photo" aria-label="Remove image">
+                                <i class="fas fa-trash-alt"></i>
                             </button>
                         </div>
                     </div>
-                    <div class="about-stats birthday-responsive-canvas birthday-canvas-wrapper" style="flex:2;display:flex;align-items:center;justify-content:center;min-width:260px;">
-                        <div class="glass-card canvas-container birthday-canvas-card" style="padding:24px;min-width:240px;min-height:340px;width:100%;max-width:600px;display:flex;align-items:center;justify-content:center;">
-                            <div class="canvas-aspect-holder">
-                                <canvas id="birthdayCanvas" width="600" height="600" aria-label="Birthday Post Canvas" tabindex="0" style="border-radius:20px;box-shadow:0 0 30px rgba(0,212,255,0.15);max-width:100%;height:auto;width:100%;"></canvas>
+                </div>
+
+                <!-- ACCORDION SECTIONS -->
+                <div class="accordion" id="accordion">
+
+                    <!-- TEXT SECTION -->
+                    <div class="acc-item open" id="acc-text">
+                        <button class="acc-toggle" aria-expanded="true" aria-controls="acc-body-text">
+                            <i class="fas fa-font acc-icon"></i> Text
+                            <i class="fas fa-chevron-down acc-chevron"></i>
+                        </button>
+                        <div class="acc-body" id="acc-body-text">
+                            <div class="acc-body-inner">
+                                <div class="form-group">
+                                    <label class="form-label" for="text-input">Your Message</label>
+                                    <input type="text" id="text-input" class="form-input" placeholder="e.g. Happy Birthday Sarah!" aria-label="Birthday message">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="font-select">Font</label>
+                                    <select id="font-select" class="form-input" aria-label="Select font">
+                                        <option value="Brittany Signature">✍ Brittany Signature</option>
+                                        <option value="Playfair Display">📖 Playfair Display</option>
+                                        <option value="Orbitron">🔵 Orbitron</option>
+                                        <option value="Rajdhani">🔤 Rajdhani</option>
+                                        <option value="Georgia">📰 Georgia</option>
+                                        <option value="Arial">🔠 Arial</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Size <span class="range-val" id="font-size-val">48</span>px</label>
+                                    <div class="range-row">
+                                        <input type="range" id="font-size-range" class="form-range" min="12" max="120" value="48" aria-label="Font size">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Text Colour</label>
+                                    <div class="color-row">
+                                        <div class="color-swatch active" data-color="#ffffff" style="background:#ffffff;" title="White" role="button" tabindex="0" aria-label="White"></div>
+                                        <div class="color-swatch" data-color="#000000" style="background:#000000;border-color:rgba(255,255,255,0.2);" title="Black" role="button" tabindex="0" aria-label="Black"></div>
+                                        <div class="color-swatch" data-color="#00d4ff" style="background:#00d4ff;" title="Cyan" role="button" tabindex="0" aria-label="Cyan"></div>
+                                        <div class="color-swatch" data-color="#f472b6" style="background:#f472b6;" title="Pink" role="button" tabindex="0" aria-label="Pink"></div>
+                                        <div class="color-swatch" data-color="#fbbf24" style="background:#fbbf24;" title="Gold" role="button" tabindex="0" aria-label="Gold"></div>
+                                        <div class="color-swatch" data-color="#34d399" style="background:#34d399;" title="Green" role="button" tabindex="0" aria-label="Green"></div>
+                                        <div class="color-swatch" data-color="#f87171" style="background:#f87171;" title="Red" role="button" tabindex="0" aria-label="Red"></div>
+                                        <input type="color" id="text-color-picker" value="#ffffff" title="Custom colour" aria-label="Custom text colour">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Style</label>
+                                    <div class="toggle-row">
+                                        <button class="style-toggle" id="bold-toggle" aria-pressed="false"><b>B</b></button>
+                                        <button class="style-toggle" id="italic-toggle" aria-pressed="false"><i>I</i></button>
+                                        <button class="style-toggle" id="underline-toggle" aria-pressed="false"><u>U</u></button>
+                                        <button class="style-toggle" id="shadow-toggle" aria-pressed="false" title="Text shadow">⬥</button>
+                                    </div>
+                                </div>
+                                <button id="add-text-btn" class="btn btn-primary" disabled>
+                                    <span class="spinner"></span>
+                                    <span id="add-text-label">Loading font…</span>
+                                </button>
                             </div>
                         </div>
                     </div>
+
+                    <!-- EMOJI SECTION -->
+                    <div class="acc-item" id="acc-emoji">
+                        <button class="acc-toggle" aria-expanded="false" aria-controls="acc-body-emoji">
+                            <i class="fas fa-smile acc-icon"></i> Stickers & Emoji
+                            <i class="fas fa-chevron-down acc-chevron"></i>
+                        </button>
+                        <div class="acc-body" id="acc-body-emoji">
+                            <div class="acc-body-inner">
+                                <div class="section-label">Birthday</div>
+                                <div class="emoji-grid" id="emoji-grid">
+                                    🎂🎁🎉🎈🎊🕯️🥳🎀
+                                    🌟⭐💫✨🎵🎶💝💖
+                                    🌹🌸🌺🌻🍰🧁🥂🍾
+                                    👑💎🎗️🏆🎆🎇🌈🦋
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BACKGROUND SECTION -->
+                    <div class="acc-item" id="acc-bg">
+                        <button class="acc-toggle" aria-expanded="false" aria-controls="acc-body-bg">
+                            <i class="fas fa-palette acc-icon"></i> Background
+                            <i class="fas fa-chevron-down acc-chevron"></i>
+                        </button>
+                        <div class="acc-body" id="acc-body-bg">
+                            <div class="acc-body-inner">
+                                <div class="section-label">Solid Colour</div>
+                                <div class="color-row" style="margin-bottom:14px;">
+                                    <div class="color-swatch" data-bg="#1a1a2e" style="background:#1a1a2e;border-color:rgba(255,255,255,0.2);" role="button" tabindex="0" aria-label="Dark blue"></div>
+                                    <div class="color-swatch" data-bg="#ffffff" style="background:#ffffff;" role="button" tabindex="0" aria-label="White"></div>
+                                    <div class="color-swatch" data-bg="#0f0f0f" style="background:#0f0f0f;border-color:rgba(255,255,255,0.2);" role="button" tabindex="0" aria-label="Black"></div>
+                                    <div class="color-swatch" data-bg="#fce4ec" style="background:#fce4ec;" role="button" tabindex="0" aria-label="Pink"></div>
+                                    <div class="color-swatch" data-bg="#e8f5e9" style="background:#e8f5e9;" role="button" tabindex="0" aria-label="Green"></div>
+                                    <div class="color-swatch" data-bg="#fff3e0" style="background:#fff3e0;" role="button" tabindex="0" aria-label="Orange"></div>
+                                    <div class="color-swatch" data-bg="#e3f2fd" style="background:#e3f2fd;" role="button" tabindex="0" aria-label="Blue"></div>
+                                    <input type="color" id="bg-color-picker" value="#1a1a2e" title="Custom background" aria-label="Custom background colour">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
+
+                <!-- ACTIONS -->
+                <div class="card">
+                    <div class="card-body" style="display:flex;flex-direction:column;gap:10px;">
+                        <div class="btn-group">
+                            <button class="btn btn-secondary btn-icon" id="undo-btn" title="Undo" aria-label="Undo" disabled>
+                                <i class="fas fa-undo"></i>
+                            </button>
+                            <button class="btn btn-secondary btn-icon" id="redo-btn" title="Redo" aria-label="Redo" disabled>
+                                <i class="fas fa-redo"></i>
+                            </button>
+                            <button class="btn btn-secondary btn-icon" id="delete-sel-btn" title="Delete selected object" aria-label="Delete selected">
+                                <i class="fas fa-times"></i>
+                            </button>
+                            <button class="btn btn-danger btn-icon" id="clear-btn" title="Clear all" aria-label="Clear canvas">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                        <button id="download-btn" class="btn btn-success">
+                            <i class="fas fa-download"></i> Download Image
+                        </button>
+                    </div>
+                </div>
+
+                <!-- TIP -->
+                <div class="info-box">
+                    <i class="fas fa-lightbulb"></i>
+                    <span>Tap any text or emoji on the canvas to select it. Use Delete / Backspace to remove it, or drag to reposition.</span>
+                </div>
+
+            </aside>
+
+            <!-- CANVAS PANEL -->
+            <div class="canvas-panel">
+
+                <!-- Toolbar -->
+                <div class="canvas-toolbar" role="toolbar" aria-label="Canvas toolbar">
+                    <button class="btn btn-secondary btn-icon" id="rotate-left-btn" title="Rotate selected 90° left" aria-label="Rotate left">
+                        <i class="fas fa-undo-alt"></i>
+                    </button>
+                    <button class="btn btn-secondary btn-icon" id="rotate-right-btn" title="Rotate selected 90° right" aria-label="Rotate right">
+                        <i class="fas fa-redo-alt"></i>
+                    </button>
+                    <button class="btn btn-secondary btn-icon" id="flip-h-btn" title="Flip horizontal" aria-label="Flip horizontal">
+                        <i class="fas fa-arrows-alt-h"></i>
+                    </button>
+                    <button class="btn btn-secondary btn-icon" id="bring-front-btn" title="Bring to front" aria-label="Bring to front">
+                        <i class="fas fa-layer-group"></i>
+                    </button>
+                    <div class="canvas-toolbar-spacer"></div>
+                    <span class="canvas-size-label tip"><i class="fas fa-expand-alt" style="font-size:0.6rem;"></i> 600×600 · PNG</span>
+                </div>
+
+                <!-- Canvas -->
+                <div class="canvas-wrap" id="canvas-wrap">
+                    <canvas id="birthdayCanvas" width="600" height="600" aria-label="Birthday post canvas" tabindex="0"></canvas>
+                    <div class="canvas-hint" id="canvas-hint">
+                        <div class="canvas-hint-icon">🎂</div>
+                        <p class="canvas-hint-text">Upload a photo to get started, or add text directly to begin designing</p>
+                    </div>
+                </div>
+
+                <!-- Selected Object Quick Controls -->
+                <div class="obj-controls card" id="obj-controls" aria-live="polite">
+                    <span class="obj-controls-title"><i class="fas fa-mouse-pointer"></i> Selected Object</span>
+                    <div class="btn-group">
+                        <button class="btn btn-secondary" id="obj-move-up" style="font-size:0.8rem;min-height:36px;padding:8px;">
+                            <i class="fas fa-arrow-up"></i> Up
+                        </button>
+                        <button class="btn btn-secondary" id="obj-move-down" style="font-size:0.8rem;min-height:36px;padding:8px;">
+                            <i class="fas fa-arrow-down"></i> Down
+                        </button>
+                        <button class="btn btn-secondary" id="obj-move-left" style="font-size:0.8rem;min-height:36px;padding:8px;">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                        <button class="btn btn-secondary" id="obj-move-right" style="font-size:0.8rem;min-height:36px;padding:8px;">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                        <button class="btn btn-danger" id="obj-delete" style="font-size:0.8rem;min-height:36px;padding:8px;">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </div>
+                </div>
+
             </div>
-        </section>
+        </div>
     </main>
 
-                <style>
-                /* === Birthday Tool Mobile Enhancements === */
-                .birthday-layout {gap:48px;}
-                .birthday-controls-card {position:sticky;top:90px;}
-                .birthday-canvas-card {transition:height .3s ease;}
-                .canvas-aspect-holder {width:100%;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;}
-                #birthdayCanvas {touch-action:none;}
-                @media (max-width: 1100px){
-                    .birthday-controls-card {position:static;}
-                }
-                @media (max-width: 900px){
-                    .birthday-layout {gap:32px !important;}
-                }
-                @media (max-width: 680px){
-                    .birthday-layout {gap:24px !important;}
-                    .birthday-controls {order:2;}
-                    .birthday-canvas-wrapper {order:1;}
-                    .birthday-controls-card {padding:24px 18px !important;}
-                }
-                @media (max-width: 540px){
-                    .birthday-controls-card {padding:20px 14px !important;}
-                    .birthday-btn {min-height:46px;}
-                    .birthday-theme-input {font-size:1rem;padding:14px 12px;}
-                }
-                @media (max-width: 420px){
-                    .birthday-controls-card {padding:18px 12px !important;}
-                    .birthday-btn {font-size:.9rem;padding:12px 10px;}
-                }
-                .birthday-btn {
-                    transition: transform 0.18s cubic-bezier(.4,2,.6,1), box-shadow 0.18s cubic-bezier(.4,2,.6,1), background 0.2s;
-                    will-change: transform, box-shadow;
-                    font-size: 1rem;
-                    min-height: 48px;
-                    padding: 14px 18px;
-                    border-radius: 12px;
-                    box-shadow: 0 2px 8px rgba(0,212,255,0.10);
-                    margin-bottom: 12px;
-                }
-                .birthday-btn:active {
-                    transform: scale(0.97);
-                    box-shadow: 0 1px 4px rgba(0,212,255,0.08);
-                }
-                .birthday-btn:hover, .birthday-btn:focus {
-                    transform: scale(1.04);
-                    box-shadow: 0 6px 24px rgba(0,212,255,0.18);
-                    background: linear-gradient(135deg, var(--electric-blue, #00d4ff), var(--cyber-purple, #8b5cf6));
-                    color: #fff;
-                }
-                @media (max-width: 600px) {
-                    .birthday-btn {
-                        font-size: 0.98rem;
-                        min-height: 44px;
-                        padding: 12px 8px;
-                        border-radius: 10px;
-                        margin-bottom: 10px;
-                    }
-                }
-            .birthday-theme-input {
-                background: var(--glass-bg, rgba(255,255,255,0.05));
-                border: 1.5px solid var(--glass-border, rgba(255,255,255,0.1));
-                border-radius: 12px;
-                color: var(--white, #fff);
-                font-size: 1.1rem;
-                padding: 16px 14px;
-                margin-bottom: 16px;
-                outline: none;
-                box-shadow: var(--glass-shadow, 0 8px 32px rgba(0,0,0,0.3));
-                transition: border-color 0.2s, box-shadow 0.2s;
-            }
-            .birthday-theme-input:focus {
-                border-color: var(--electric-blue, #00d4ff);
-                box-shadow: 0 0 0 2px var(--electric-blue, #00d4ff), var(--glass-shadow, 0 8px 32px rgba(0,0,0,0.3));
-                background: var(--glass-bg, rgba(255,255,255,0.09));
-            }
-        /* Responsive layout for birthday-photo.html */
-        @media (max-width: 900px) {
-            .birthday-responsive-flex {flex-direction: column !important;align-items: stretch !important;}
-            .birthday-responsive-panel, .birthday-responsive-canvas {max-width:100% !important;min-width:0 !important;}
-            .glass-card.canvas-container {min-width:0 !important;max-width:100% !important;padding:16px !important;}
-        }
-        @media (max-width: 600px) {
-            .section-header {margin-bottom: 32px !important;}
-            .glass-card.canvas-container {min-width:0 !important;min-height:240px !important;padding:8px !important;}
-            .about-content {gap:20px !important;}
-        }
-        </style>
-        <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // --- Canvas Setup ---
-        const canvasEl = document.getElementById('birthdayCanvas');
-        const canvas = new fabric.Canvas('birthdayCanvas', { backgroundColor: '#f0f0f0' });
-        // Keep logical canvas size fixed (600x600) for consistent font sizes & export.
-        function resizeCanvasDisplay() {
-            const holder = canvasEl.parentElement; // aspect holder
-            if (!holder) return;
-            const available = holder.clientWidth;
-            const target = Math.min(available, 560); // small padding on mobile
-            canvasEl.style.width = target + 'px';
-            canvasEl.style.height = target + 'px';
-        }
-        window.addEventListener('resize', resizeCanvasDisplay);
-        window.addEventListener('orientationchange', () => setTimeout(resizeCanvasDisplay, 50));
-
-        // Helper to always set correct z-order: image (0), template (1), all text (top)
-        function fixLayerOrder() {
-            // Uploaded image (not _isTemplate)
-            const uploadedImg = canvas.getObjects('image').find(obj => !obj._isTemplate);
-            if (uploadedImg) uploadedImg.moveTo(0);
-            // Template image
-            const templateImg = canvas.getObjects('image').find(obj => obj._isTemplate);
-            if (templateImg) templateImg.moveTo(1);
-            // All text objects to top
-            canvas.getObjects('i-text').forEach(obj => obj.moveTo(canvas.getObjects().length - 1));
-            canvas.renderAll();
-        }
-
-        // --- Set Default Template (no selection UI) ---
-        fabric.Image.fromURL('Template/t1.png', (img) => {
-            canvas.setBackgroundImage(img, () => {
-                img.scaleX = canvas.width / img.width;
-                img.scaleY = canvas.height / img.height;
-                canvas.renderAll();
-                fixLayerOrder();
-                resizeCanvasDisplay(); // ensure initial fit
-            });
-        });
-
-        // --- Image Upload Handling ---
-        const imageUploader = document.getElementById('image-uploader');
-        imageUploader.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = (f) => {
-                fabric.Image.fromURL(f.target.result, (img) => {
-                    img.scaleToWidth(250);
-                    canvas.add(img);
-                    canvas.centerObject(img);
-                    canvas.setActiveObject(img);
-                    // Remove any previous template overlay
-                    const prevTemplate = canvas.getObjects('image').find(obj => obj._isTemplate);
-                    if (prevTemplate) canvas.remove(prevTemplate);
-                    // Add template overlay as non-moveable, always above the uploaded image
-                    fabric.Image.fromURL('Template/t1.png', (templateImg) => {
-                        templateImg.set({
-                            selectable: false,
-                            evented: false,
-                            left: 0,
-                            top: 0,
-                            scaleX: canvas.width / templateImg.width,
-                            scaleY: canvas.height / templateImg.height
-                        });
-                        templateImg._isTemplate = true;
-                        canvas.add(templateImg);
-                        fixLayerOrder();
-                    });
-                });
-            };
-            reader.readAsDataURL(file);
-        });
-
-        // --- Text and Font Handling ---
-        const textInput = document.getElementById('text-input');
-        const addTextBtn = document.getElementById('add-text-btn');
-
-        // Disable the button initially while the font loads
-        addTextBtn.disabled = true;
-        addTextBtn.innerHTML = '<span class="animate-pulse">Loading Font...</span>';
-        addTextBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
-
-        // Use the FontFace API to detect when the font is loaded
-        const customFont = new FontFace('Brittany Signature', 'url(Fonts/BrittanySignature.ttf)');
-        customFont.load().then((loadedFont) => {
-            document.fonts.add(loadedFont);
-            // Add default text 'Birthday' to the canvas, centered and upper
-            const defaultText = new fabric.IText('Birthday', {
-                left: canvas.getWidth() / 2,
-                top: canvas.getHeight() * 0.18, // upper part of canvas
-                originX: 'center',
-                originY: 'center',
-                fontFamily: 'Brittany Signature',
-                fill: '#000000',
-                fontSize: 70,
-                stroke: '#ffffff',
-                strokeWidth: 0.7,
-                paintFirst: 'stroke',
-                selectable: false, // default text is not selectable
-                evented: false
-            });
-            canvas.add(defaultText);
-            canvas.renderAll();
-            // Enable the "Add Text" button now that the font is ready
-            addTextBtn.disabled = false;
-            addTextBtn.innerHTML = '<i class="fas fa-plus"></i> Add Text';
-            addTextBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
-        }).catch(error => {
-            addTextBtn.textContent = 'Font Failed to Load';
-            // Keep it disabled and styled as an error/inactive button
-            addTextBtn.classList.add('bg-red-500', 'cursor-not-allowed');
-            addTextBtn.classList.remove('bg-gray-400');
-        });
-
-        addTextBtn.addEventListener('click', () => {
-            // Remove any previous user message (only one allowed)
-            const prevMsg = canvas.getObjects('i-text').find(obj => obj._isUserMessage);
-            if (prevMsg) canvas.remove(prevMsg);
-            const textValue = textInput.value || 'Name';
-            // Centered and lower (about 70% down)
-            const msgText = new fabric.IText(textValue, {
-                left: canvas.getWidth() / 2,
-                top: canvas.getHeight() * 0.75,
-                originX: 'center',
-                originY: 'center',
-                fontFamily: 'Brittany Signature',
-                fill: '#000000',
-                fontSize: 50,
-                stroke: '#ffffff',
-                strokeWidth: 0.5,
-                paintFirst: 'stroke',
-                selectable: false,
-                evented: false
-            });
-            msgText._isUserMessage = true;
-            canvas.add(msgText);
-            fixLayerOrder();
-            // Accessibility: focus canvas after adding text
-            document.getElementById('birthdayCanvas').focus();
-        });
-
-        // --- Keyboard Controls (Delete Object) ---
-        window.addEventListener('keydown', (e) => {
-            if (e.key === 'Delete' || e.key === 'Backspace') {
-                const activeObject = canvas.getActiveObject();
-                if (activeObject) {
-                    canvas.remove(activeObject);
-                }
-            }
-        });
-
-        // --- Download Functionality ---
-        const downloadBtn = document.getElementById('download-btn');
-        downloadBtn.addEventListener('click', () => {
-            // Ensure template overlay is present and on top before exporting
-            const prevTemplate = canvas.getObjects('image').find(obj => obj._isTemplate);
-            const rerenderAndDownload = () => {
-                fixLayerOrder();
-                // Force re-render of all text objects to ensure font is applied
-                canvas.getObjects('i-text').forEach(obj => {
-                    obj.dirty = true;
-                });
-                canvas.discardActiveObject().renderAll();
-                setTimeout(() => {
-                    const dataURL = canvas.toDataURL({
-                        format: 'png',
-                        quality: 1.0,
-                        multiplier: 2 
-                    });
-                    const link = document.createElement('a');
-                    link.href = dataURL;
-                    link.download = 'birthday-post-sasindu-tech.png';
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                    // Show a toast/alert for download feedback
-                    showToast('Downloaded!');
-                }, 100); // Wait a moment to ensure font is rendered
-            };
-            if (!prevTemplate) {
-                fabric.Image.fromURL('Template/t1.png', (templateImg) => {
-                    templateImg.set({
-                        selectable: false,
-                        evented: false,
-                        left: 0,
-                        top: 0,
-                        scaleX: canvas.width / templateImg.width,
-                        scaleY: canvas.height / templateImg.height
-                    });
-                    templateImg._isTemplate = true;
-                    canvas.add(templateImg);
-                    rerenderAndDownload();
-                });
-            } else {
-                rerenderAndDownload();
-            }
-        });
-
-        // --- Toast Feedback ---
-        function showToast(message) {
-            let toast = document.createElement('div');
-            toast.textContent = message;
-            toast.className = 'fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50 text-lg animate-fadein';
-            document.body.appendChild(toast);
-            setTimeout(() => {
-                toast.classList.add('opacity-0');
-                setTimeout(() => document.body.removeChild(toast), 600);
-            }, 1500);
-        }
-        // Trigger initial responsive sizing after a short delay (fonts/layout settle)
-    setTimeout(resizeCanvasDisplay, 120);
-    });
-    </script>
-
     <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-main">
-                    <div class="footer-brand">
-                        <h3 class="footer-logo">Sasindu Mudawagedara</h3>
-                        <p>Creating digital experiences that inspire and engage. Let's build something amazing together.</p>
-                        <div class="footer-contact">
-                            <div class="contact-item">
-                                <i class="fas fa-envelope" aria-hidden="true"></i>
-                                <a href="mailto:pradeepsasindu2001@gmail.com">pradeepsasindu2001@gmail.com</a>
-                            </div>
-                            <div class="contact-item">
-                                <i class="fas fa-phone" aria-hidden="true"></i>
-                                <a href="https://wa.me/+94705187952" target="_blank" rel="noopener">+94 70 518 7952</a>
-                            </div>
-                            <div class="contact-item">
-                                <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
-                                <span>Navinna, Maharagama, Sri Lanka</span>
-                            </div>
-                        </div>
-                        <div class="footer-social">
-                            <a href="https://linkedin.com/in/sasindu-mudawagedara" class="social-link" aria-label="LinkedIn Profile" target="_blank" rel="noopener">
-                                <i class="fab fa-linkedin" aria-hidden="true"></i>
-                            </a>
-                            <a href="https://github.com/SASINDU20013d" class="social-link" aria-label="GitHub Profile" target="_blank" rel="noopener">
-                                <i class="fab fa-github" aria-hidden="true"></i>
-                            </a>
-                            <a href="https://behance.net/sasindu" class="social-link" aria-label="Behance Portfolio" target="_blank" rel="noopener">
-                                <i class="fab fa-behance" aria-hidden="true"></i>
-                            </a>
-                            <a href="https://dribbble.com/sasindu" class="social-link" aria-label="Dribbble Profile" target="_blank" rel="noopener">
-                                <i class="fab fa-dribbble" aria-hidden="true"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="footer-links-group">
-                        <div class="footer-column">
-                            <h4>Quick Links</h4>
-                            <ul>
-                                <li><a href="index.html#home">Home</a></li>
-                                <li><a href="index.html#about">About</a></li>
-                                <li><a href="index.html#services">Services</a></li>
-                                <li><a href="index.html#portfolio">Portfolio</a></li>
-                                <li><a href="index.html#contact">Contact</a></li>
-                            </ul>
-                        </div>
-                        <div class="footer-column">
-                            <h4>Services</h4>
-                            <ul>
-                                <li><a href="index.html#services">Web Design</a></li>
-                                <li><a href="index.html#services">Graphic Design</a></li>
-                                <li><a href="index.html#services">UI/UX Design</a></li>
-                                <li><a href="index.html#services">Academic Help</a></li>
-                            </ul>
-                        </div>
-                        <div class="footer-column">
-                            <h4>Resources</h4>
-                            <ul>
-                                <li><a href="portfolio-download.html">Download Portfolio</a></li>
-                                <li><a href="privacy-policy.html">Privacy Policy</a></li>
-                                <li><a href="terms-of-service.html">Terms of Service</a></li>
-                            </ul>
-                        </div>
-                    </div>
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <h3>Sasindu Mudawagedara</h3>
+                <p>Creating digital experiences that inspire and engage. Let's build something amazing together.</p>
+                <div class="footer-contact">
+                    <div class="contact-item"><i class="fas fa-phone"></i><a href="https://wa.me/+94705187952" target="_blank" rel="noopener">+94 70 518 7952</a></div>
+                    <div class="contact-item"><i class="fas fa-map-marker-alt"></i><span>Navinna, Maharagama, Sri Lanka</span></div>
                 </div>
-                <div class="footer-bottom">
-                    <div class="footer-text">
-                        <p>&copy; 2025 Sasindu Mudawagedara. All rights reserved.</p>
-                    </div>
-                    <div class="footer-links">
-                        <a href="privacy-policy.html">Privacy</a>
-                        <a href="terms-of-service.html">Terms</a>
-                        <a href="sitemap.xml">Sitemap</a>
-                    </div>
+                <div class="footer-social">
+                    <a href="https://linkedin.com/in/sasindu-mudawagedara" class="social-link" aria-label="LinkedIn" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://github.com/SASINDU20013d" class="social-link" aria-label="GitHub" target="_blank" rel="noopener"><i class="fab fa-github"></i></a>
+                    <a href="https://behance.net/sasindu" class="social-link" aria-label="Behance" target="_blank" rel="noopener"><i class="fab fa-behance"></i></a>
+                    <a href="https://dribbble.com/sasindu" class="social-link" aria-label="Dribbble" target="_blank" rel="noopener"><i class="fab fa-dribbble"></i></a>
                 </div>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html#home">Home</a></li>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="index.html#services">Services</a></li>
+                    <li><a href="index.html#portfolio">Portfolio</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Services</h4>
+                <ul>
+                    <li><a href="index.html#services">Web Design</a></li>
+                    <li><a href="index.html#services">Graphic Design</a></li>
+                    <li><a href="index.html#services">UI/UX Design</a></li>
+                    <li><a href="index.html#services">Academic Help</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="portfolio-download.html">Download Portfolio</a></li>
+                    <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                    <li><a href="terms-of-service.html">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 Sasindu Mudawagedara. All rights reserved.</p>
+            <div class="footer-bottom-links">
+                <a href="privacy-policy.html">Privacy</a>
+                <a href="terms-of-service.html">Terms</a>
+                <a href="sitemap.xml">Sitemap</a>
             </div>
         </div>
     </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        /* ==============================================
+           CANVAS SETUP
+        ============================================== */
+        const canvas = new fabric.Canvas('birthdayCanvas', { backgroundColor: '#1a1a2e' });
+        const CANVAS_SIZE = 600;
+        canvas.setWidth(CANVAS_SIZE);
+        canvas.setHeight(CANVAS_SIZE);
+
+        // Responsive display scaling
+        function resizeCanvas() {
+            const wrap = document.getElementById('canvas-wrap');
+            const size = wrap.clientWidth;
+            const scale = size / CANVAS_SIZE;
+            const canvasEl = document.getElementById('birthdayCanvas');
+            canvasEl.style.width = size + 'px';
+            canvasEl.style.height = size + 'px';
+            // Scale the outer wrapper that fabric uses
+            const upper = document.querySelector('.upper-canvas');
+            const lower = document.querySelector('.lower-canvas');
+            [upper, lower].forEach(el => {
+                if (!el) return;
+                el.style.width = size + 'px';
+                el.style.height = size + 'px';
+            });
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        window.addEventListener('orientationchange', () => setTimeout(resizeCanvas, 80));
+        setTimeout(resizeCanvas, 50);
+
+        /* ==============================================
+           UNDO / REDO HISTORY
+        ============================================== */
+        const history = { stack: [], pos: -1, locked: false };
+
+        function snapshot() {
+            if (history.locked) return;
+            const json = JSON.stringify(canvas.toJSON(['_isTemplate','_isUserMessage','_isEmoji']));
+            // Truncate redo future
+            history.stack = history.stack.slice(0, history.pos + 1);
+            history.stack.push(json);
+            if (history.stack.length > 30) history.stack.shift();
+            history.pos = history.stack.length - 1;
+            updateUndoRedo();
+        }
+
+        function updateUndoRedo() {
+            document.getElementById('undo-btn').disabled = history.pos <= 0;
+            document.getElementById('redo-btn').disabled = history.pos >= history.stack.length - 1;
+        }
+
+        function restoreSnapshot(json) {
+            history.locked = true;
+            canvas.loadFromJSON(json, () => {
+                canvas.renderAll();
+                history.locked = false;
+                updateUndoRedo();
+            });
+        }
+
+        document.getElementById('undo-btn').addEventListener('click', () => {
+            if (history.pos > 0) {
+                history.pos--;
+                restoreSnapshot(history.stack[history.pos]);
+            }
+        });
+
+        document.getElementById('redo-btn').addEventListener('click', () => {
+            if (history.pos < history.stack.length - 1) {
+                history.pos++;
+                restoreSnapshot(history.stack[history.pos]);
+            }
+        });
+
+        // snapshot after significant changes
+        canvas.on('object:added', snapshot);
+        canvas.on('object:removed', snapshot);
+        canvas.on('object:modified', snapshot);
+
+        /* ==============================================
+           PROGRESS & STEPS
+        ============================================== */
+        let uploadedImg = false, addedText = false;
+
+        function updateProgress() {
+            const step1 = document.getElementById('step-1');
+            const step2 = document.getElementById('step-2');
+            const step3 = document.getElementById('step-3');
+            const bar = document.getElementById('progress-bar');
+
+            if (!uploadedImg && !addedText) {
+                step1.className = 'step-item active';
+                step2.className = 'step-item';
+                step3.className = 'step-item';
+                bar.style.width = '10%';
+            } else if (uploadedImg && !addedText) {
+                step1.className = 'step-item done';
+                step2.className = 'step-item active';
+                step3.className = 'step-item';
+                bar.style.width = '55%';
+            } else {
+                step1.className = 'step-item done';
+                step2.className = 'step-item done';
+                step3.className = 'step-item active';
+                bar.style.width = '100%';
+            }
+        }
+
+        /* ==============================================
+           CANVAS HINT
+        ============================================== */
+        function hideHint() {
+            document.getElementById('canvas-hint').classList.add('hidden');
+        }
+
+        /* ==============================================
+           LOAD DEFAULT TEMPLATE
+        ============================================== */
+        fabric.Image.fromURL('Template/t1.png', (img) => {
+            if (!img) return;
+            img.set({ selectable: false, evented: false, left: 0, top: 0 });
+            img.scaleX = CANVAS_SIZE / img.width;
+            img.scaleY = CANVAS_SIZE / img.height;
+            img._isTemplate = true;
+            canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
+        });
+
+        /* ==============================================
+           LAYER ORDER HELPER
+        ============================================== */
+        function fixLayerOrder() {
+            const uploaded = canvas.getObjects('image').find(o => !o._isTemplate);
+            if (uploaded) uploaded.moveTo(0);
+            canvas.getObjects('i-text').concat(canvas.getObjects('text')).forEach(o => {
+                o.moveTo(canvas.getObjects().length - 1);
+            });
+            canvas.renderAll();
+        }
+
+        /* ==============================================
+           IMAGE UPLOAD (+ Drag & Drop)
+        ============================================== */
+        const imageUploader = document.getElementById('image-uploader');
+        const uploadZone = document.getElementById('upload-zone');
+
+        function handleImageFile(file) {
+            if (!file || !file.type.startsWith('image/')) {
+                showToast('Please upload a valid image file.', 'error'); return;
+            }
+            if (file.size > 10 * 1024 * 1024) {
+                showToast('Image too large. Max 10MB.', 'error'); return;
+            }
+            const reader = new FileReader();
+            reader.onload = (f) => {
+                fabric.Image.fromURL(f.target.result, (img) => {
+                    // Remove existing uploaded image
+                    canvas.getObjects('image').filter(o => !o._isTemplate).forEach(o => canvas.remove(o));
+                    img.scaleToWidth(280);
+                    canvas.add(img);
+                    canvas.centerObject(img);
+                    canvas.setActiveObject(img);
+                    // Re-apply template overlay
+                    canvas.getObjects('image').filter(o => o._isTemplate).forEach(o => canvas.remove(o));
+                    fabric.Image.fromURL('Template/t1.png', (tImg) => {
+                        if (!tImg) return;
+                        tImg.set({ selectable: false, evented: false, left: 0, top: 0 });
+                        tImg.scaleX = CANVAS_SIZE / tImg.width;
+                        tImg.scaleY = CANVAS_SIZE / tImg.height;
+                        tImg._isTemplate = true;
+                        canvas.add(tImg);
+                        fixLayerOrder();
+                    });
+                    uploadedImg = true;
+                    hideHint();
+                    updateProgress();
+                    showToast('Photo added!');
+                });
+            };
+            reader.readAsDataURL(file);
+        }
+
+        imageUploader.addEventListener('change', e => handleImageFile(e.target.files[0]));
+
+        uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
+        uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
+        uploadZone.addEventListener('drop', e => {
+            e.preventDefault();
+            uploadZone.classList.remove('drag-over');
+            handleImageFile(e.dataTransfer.files[0]);
+        });
+
+        uploadZone.addEventListener('keydown', e => {
+            if (e.key === 'Enter' || e.key === ' ') imageUploader.click();
+        });
+
+        /* ==============================================
+           IMAGE TRANSFORM CONTROLS
+        ============================================== */
+        function getUploadedImg() {
+            return canvas.getObjects('image').find(o => !o._isTemplate);
+        }
+
+        document.getElementById('zoom-in-btn').addEventListener('click', () => {
+            const img = canvas.getActiveObject() || getUploadedImg();
+            if (!img) return;
+            img.scaleX *= 1.1; img.scaleY *= 1.1; canvas.renderAll(); canvas.fire('object:modified');
+        });
+
+        document.getElementById('zoom-out-btn').addEventListener('click', () => {
+            const img = canvas.getActiveObject() || getUploadedImg();
+            if (!img) return;
+            img.scaleX *= 0.9; img.scaleY *= 0.9; canvas.renderAll(); canvas.fire('object:modified');
+        });
+
+        document.getElementById('center-img-btn').addEventListener('click', () => {
+            const img = getUploadedImg();
+            if (!img) return;
+            canvas.centerObject(img);
+            canvas.renderAll(); canvas.fire('object:modified');
+        });
+
+        document.getElementById('remove-img-btn').addEventListener('click', () => {
+            const img = getUploadedImg();
+            if (img) {
+                canvas.remove(img);
+                uploadedImg = false;
+                updateProgress();
+                showToast('Photo removed.');
+            }
+        });
+
+        /* ==============================================
+           TOOLBAR ACTIONS
+        ============================================== */
+        document.getElementById('rotate-left-btn').addEventListener('click', () => {
+            const obj = canvas.getActiveObject();
+            if (!obj) return;
+            obj.angle = (obj.angle - 90 + 360) % 360;
+            canvas.renderAll(); canvas.fire('object:modified');
+        });
+
+        document.getElementById('rotate-right-btn').addEventListener('click', () => {
+            const obj = canvas.getActiveObject();
+            if (!obj) return;
+            obj.angle = (obj.angle + 90) % 360;
+            canvas.renderAll(); canvas.fire('object:modified');
+        });
+
+        document.getElementById('flip-h-btn').addEventListener('click', () => {
+            const obj = canvas.getActiveObject();
+            if (!obj) return;
+            obj.flipX = !obj.flipX;
+            canvas.renderAll(); canvas.fire('object:modified');
+        });
+
+        document.getElementById('bring-front-btn').addEventListener('click', () => {
+            const obj = canvas.getActiveObject();
+            if (obj) { canvas.bringToFront(obj); canvas.renderAll(); }
+        });
+
+        /* ==============================================
+           FONT LOADING
+        ============================================== */
+        const addTextBtn = document.getElementById('add-text-btn');
+        const addTextLabel = document.getElementById('add-text-label');
+        let fontReady = false;
+
+        const customFont = new FontFace('Brittany Signature', 'url(Fonts/BrittanySignature.ttf)');
+        customFont.load().then(loaded => {
+            document.fonts.add(loaded);
+            fontReady = true;
+            addTextBtn.disabled = false;
+            addTextBtn.innerHTML = '<i class="fas fa-plus"></i> Add Text to Canvas';
+
+            // Default "Birthday" text
+            const defText = new fabric.IText('Birthday', {
+                left: CANVAS_SIZE / 2, top: CANVAS_SIZE * 0.18,
+                originX: 'center', originY: 'center',
+                fontFamily: 'Brittany Signature',
+                fill: '#ffffff', fontSize: 70,
+                stroke: 'rgba(0,0,0,0.3)', strokeWidth: 0.8,
+                paintFirst: 'stroke', selectable: false, evented: false
+            });
+            canvas.add(defText);
+            hideHint();
+            canvas.renderAll();
+        }).catch(() => {
+            fontReady = true;
+            addTextBtn.disabled = false;
+            addTextBtn.innerHTML = '<i class="fas fa-plus"></i> Add Text to Canvas';
+        });
+
+        /* ==============================================
+           TEXT CONTROLS STATE
+        ============================================== */
+        let textColor = '#ffffff';
+        let isBold = false, isItalic = false, isUnderline = false, hasShadow = false;
+
+        // Font size range
+        const fontSizeRange = document.getElementById('font-size-range');
+        const fontSizeVal = document.getElementById('font-size-val');
+        fontSizeRange.addEventListener('input', () => {
+            fontSizeVal.textContent = fontSizeRange.value;
+            const sel = canvas.getActiveObject();
+            if (sel && sel.type === 'i-text') {
+                sel.fontSize = parseInt(fontSizeRange.value);
+                canvas.renderAll();
+            }
+        });
+
+        // Color swatches (text)
+        document.querySelectorAll('[data-color]').forEach(sw => {
+            sw.addEventListener('click', () => {
+                document.querySelectorAll('[data-color]').forEach(s => s.classList.remove('active'));
+                sw.classList.add('active');
+                textColor = sw.dataset.color;
+                document.getElementById('text-color-picker').value = textColor;
+                applyColorToSelected();
+            });
+            sw.addEventListener('keydown', e => { if (e.key === 'Enter') sw.click(); });
+        });
+
+        document.getElementById('text-color-picker').addEventListener('input', e => {
+            textColor = e.target.value;
+            document.querySelectorAll('[data-color]').forEach(s => s.classList.remove('active'));
+            applyColorToSelected();
+        });
+
+        function applyColorToSelected() {
+            const sel = canvas.getActiveObject();
+            if (sel && sel.type === 'i-text') {
+                sel.fill = textColor; canvas.renderAll();
+            }
+        }
+
+        // Background swatches
+        document.querySelectorAll('[data-bg]').forEach(sw => {
+            sw.addEventListener('click', () => {
+                canvas.setBackgroundColor(sw.dataset.bg, canvas.renderAll.bind(canvas));
+                showToast('Background updated.');
+            });
+        });
+
+        document.getElementById('bg-color-picker').addEventListener('input', e => {
+            canvas.setBackgroundColor(e.target.value, canvas.renderAll.bind(canvas));
+        });
+
+        // Style toggles
+        function makeToggle(id, onToggle) {
+            const btn = document.getElementById(id);
+            btn.addEventListener('click', () => {
+                const active = !btn.classList.contains('active');
+                btn.classList.toggle('active', active);
+                btn.setAttribute('aria-pressed', active);
+                onToggle(active);
+            });
+        }
+
+        makeToggle('bold-toggle', v => { isBold = v; applyStylesToSelected(); });
+        makeToggle('italic-toggle', v => { isItalic = v; applyStylesToSelected(); });
+        makeToggle('underline-toggle', v => { isUnderline = v; applyStylesToSelected(); });
+        makeToggle('shadow-toggle', v => {
+            hasShadow = v;
+            const sel = canvas.getActiveObject();
+            if (sel && sel.type === 'i-text') {
+                sel.shadow = hasShadow ? new fabric.Shadow({ color: 'rgba(0,0,0,0.5)', blur: 8, offsetX: 2, offsetY: 2 }) : null;
+                canvas.renderAll();
+            }
+        });
+
+        function applyStylesToSelected() {
+            const sel = canvas.getActiveObject();
+            if (!sel || sel.type !== 'i-text') return;
+            sel.fontWeight = isBold ? 'bold' : 'normal';
+            sel.fontStyle = isItalic ? 'italic' : 'normal';
+            sel.underline = isUnderline;
+            canvas.renderAll();
+        }
+
+        /* ==============================================
+           ADD TEXT BUTTON
+        ============================================== */
+        addTextBtn.addEventListener('click', () => {
+            const val = document.getElementById('text-input').value.trim() || 'Happy Birthday! 🎂';
+            const fontFamily = document.getElementById('font-select').value;
+            const fontSize = parseInt(fontSizeRange.value);
+
+            // Remove previous user message
+            canvas.getObjects('i-text').filter(o => o._isUserMessage).forEach(o => canvas.remove(o));
+
+            const txt = new fabric.IText(val, {
+                left: CANVAS_SIZE / 2,
+                top: CANVAS_SIZE * 0.75,
+                originX: 'center', originY: 'center',
+                fontFamily,
+                fill: textColor,
+                fontSize,
+                fontWeight: isBold ? 'bold' : 'normal',
+                fontStyle: isItalic ? 'italic' : 'normal',
+                underline: isUnderline,
+                stroke: 'rgba(0,0,0,0.2)', strokeWidth: 0.4,
+                paintFirst: 'stroke',
+                selectable: true, evented: true,
+                shadow: hasShadow ? new fabric.Shadow({ color: 'rgba(0,0,0,0.5)', blur: 8, offsetX: 2, offsetY: 2 }) : null
+            });
+            txt._isUserMessage = true;
+            canvas.add(txt);
+            canvas.setActiveObject(txt);
+            fixLayerOrder();
+            hideHint();
+            addedText = true;
+            updateProgress();
+            showToast('Text added! Drag to reposition.');
+        });
+
+        /* ==============================================
+           EMOJI / STICKERS
+        ============================================== */
+        const emojiGrid = document.getElementById('emoji-grid');
+        const emojis = ['🎂','🎁','🎉','🎈','🎊','🕯️','🥳','🎀','🌟','⭐','💫','✨','🎵','🎶','💝','💖','🌹','🌸','🌺','🌻','🍰','🧁','🥂','🍾','👑','💎','🎗️','🏆','🎆','🎇','🌈','🦋'];
+        emojiGrid.innerHTML = '';
+        emojis.forEach(em => {
+            const btn = document.createElement('button');
+            btn.className = 'emoji-btn';
+            btn.textContent = em;
+            btn.title = 'Add ' + em;
+            btn.setAttribute('aria-label', 'Add emoji ' + em);
+            btn.addEventListener('click', () => {
+                const t = new fabric.IText(em, {
+                    left: CANVAS_SIZE / 2, top: CANVAS_SIZE / 2,
+                    originX: 'center', originY: 'center',
+                    fontSize: 60, selectable: true, evented: true
+                });
+                t._isEmoji = true;
+                canvas.add(t);
+                canvas.setActiveObject(t);
+                hideHint();
+                showToast(em + ' added!');
+            });
+            emojiGrid.appendChild(btn);
+        });
+
+        /* ==============================================
+           SELECTED OBJECT CONTROLS
+        ============================================== */
+        const objControls = document.getElementById('obj-controls');
+
+        canvas.on('selection:created', () => objControls.classList.add('visible'));
+        canvas.on('selection:cleared', () => objControls.classList.remove('visible'));
+
+        function moveSelected(dx, dy) {
+            const obj = canvas.getActiveObject();
+            if (!obj) return;
+            obj.left += dx; obj.top += dy;
+            obj.setCoords();
+            canvas.renderAll(); canvas.fire('object:modified');
+        }
+
+        document.getElementById('obj-move-up').addEventListener('click', () => moveSelected(0, -10));
+        document.getElementById('obj-move-down').addEventListener('click', () => moveSelected(0, 10));
+        document.getElementById('obj-move-left').addEventListener('click', () => moveSelected(-10, 0));
+        document.getElementById('obj-move-right').addEventListener('click', () => moveSelected(10, 0));
+
+        document.getElementById('obj-delete').addEventListener('click', () => {
+            const obj = canvas.getActiveObject();
+            if (obj) { canvas.remove(obj); canvas.discardActiveObject(); canvas.renderAll(); }
+        });
+
+        document.getElementById('delete-sel-btn').addEventListener('click', () => {
+            const obj = canvas.getActiveObject();
+            if (obj) { canvas.remove(obj); canvas.discardActiveObject(); canvas.renderAll(); }
+        });
+
+        /* ==============================================
+           CLEAR CANVAS
+        ============================================== */
+        document.getElementById('clear-btn').addEventListener('click', () => {
+            if (!confirm('Clear everything from the canvas?')) return;
+            canvas.getObjects().forEach(o => canvas.remove(o));
+            canvas.setBackgroundColor('#1a1a2e', canvas.renderAll.bind(canvas));
+            uploadedImg = false; addedText = false;
+            updateProgress();
+            showToast('Canvas cleared.');
+        });
+
+        /* ==============================================
+           KEYBOARD SHORTCUTS
+        ============================================== */
+        window.addEventListener('keydown', e => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            const obj = canvas.getActiveObject();
+            if ((e.key === 'Delete' || e.key === 'Backspace') && obj) {
+                canvas.remove(obj); canvas.discardActiveObject(); canvas.renderAll();
+            }
+            if ((e.ctrlKey || e.metaKey) && e.key === 'z') { document.getElementById('undo-btn').click(); e.preventDefault(); }
+            if ((e.ctrlKey || e.metaKey) && e.key === 'y') { document.getElementById('redo-btn').click(); e.preventDefault(); }
+            if (obj) {
+                if (e.key === 'ArrowUp') { moveSelected(0, e.shiftKey ? -10 : -2); e.preventDefault(); }
+                if (e.key === 'ArrowDown') { moveSelected(0, e.shiftKey ? 10 : 2); e.preventDefault(); }
+                if (e.key === 'ArrowLeft') { moveSelected(e.shiftKey ? -10 : -2, 0); e.preventDefault(); }
+                if (e.key === 'ArrowRight') { moveSelected(e.shiftKey ? 10 : 2, 0); e.preventDefault(); }
+            }
+        });
+
+        /* ==============================================
+           ACCORDION
+        ============================================== */
+        document.querySelectorAll('.acc-toggle').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const item = btn.closest('.acc-item');
+                const wasOpen = item.classList.contains('open');
+                // Close all
+                document.querySelectorAll('.acc-item').forEach(i => {
+                    i.classList.remove('open');
+                    i.querySelector('.acc-toggle').setAttribute('aria-expanded', 'false');
+                });
+                // Open clicked if it was closed
+                if (!wasOpen) {
+                    item.classList.add('open');
+                    btn.setAttribute('aria-expanded', 'true');
+                }
+            });
+        });
+
+        /* ==============================================
+           DOWNLOAD
+        ============================================== */
+        document.getElementById('download-btn').addEventListener('click', () => {
+            const btn = document.getElementById('download-btn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span> Preparing…';
+
+            // Ensure template on top before export
+            const tpl = canvas.getObjects('image').find(o => o._isTemplate);
+            const doExport = () => {
+                fixLayerOrder();
+                canvas.discardActiveObject().renderAll();
+                setTimeout(() => {
+                    const dataURL = canvas.toDataURL({ format: 'png', quality: 1.0, multiplier: 2 });
+                    const a = document.createElement('a');
+                    a.href = dataURL;
+                    a.download = 'birthday-post-sasindu-tech.png';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-download"></i> Download Image';
+                    showToast('Downloaded successfully! 🎉');
+                    addedText = true; updateProgress();
+                }, 150);
+            };
+
+            if (!tpl) {
+                fabric.Image.fromURL('Template/t1.png', (tImg) => {
+                    if (tImg) {
+                        tImg.set({ selectable: false, evented: false, left: 0, top: 0 });
+                        tImg.scaleX = CANVAS_SIZE / tImg.width;
+                        tImg.scaleY = CANVAS_SIZE / tImg.height;
+                        tImg._isTemplate = true;
+                        canvas.add(tImg);
+                    }
+                    doExport();
+                });
+            } else { doExport(); }
+        });
+
+        /* ==============================================
+           BACK TO TOP
+        ============================================== */
+        const bttBtn = document.getElementById('back-to-top');
+        window.addEventListener('scroll', () => {
+            bttBtn.classList.toggle('visible', window.scrollY > 300);
+        });
+        bttBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+        /* ==============================================
+           TOAST
+        ============================================== */
+        function showToast(msg, type = 'success') {
+            const t = document.getElementById('toast');
+            const m = document.getElementById('toast-msg');
+            m.textContent = msg;
+            t.style.background = type === 'error'
+                ? 'linear-gradient(135deg,#dc2626,#ef4444)'
+                : 'linear-gradient(135deg,#059669,#10b981)';
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 2200);
+        }
+
+        // Paste image from clipboard
+        document.addEventListener('paste', e => {
+            const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+            for (const item of items) {
+                if (item.type.indexOf('image') !== -1) {
+                    handleImageFile(item.getAsFile());
+                    break;
+                }
+            }
+        });
+
+        // Initial progress
+        updateProgress();
+
+    }); // end DOMContentLoaded
+    </script>
 </body>
-    <script src="script.js"></script>
 </html>
